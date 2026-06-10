@@ -192,6 +192,7 @@ pre code{background:none;padding:0;font-size:13px;color:#d4d4e8}
     <a class="sidebar-link indent" href="#portal-nodes">Portal Nodes</a>
     <a class="sidebar-link indent" href="#step-3">3 — Connect &amp; Bake</a>
     <a class="sidebar-link indent" href="#step-4">4 — Portal Costs</a>
+    <a class="sidebar-link indent" href="#portal-sizes">Portal Sizes</a>
     <a class="sidebar-link indent" href="#step-5">5 — Test Paths</a>
     <a class="sidebar-link indent" href="#step-6">6 — Reverb Rooms</a>
     <a class="sidebar-link indent" href="#step-7">7 — Configure Rooms</a>
@@ -341,7 +342,7 @@ pre code{background:none;padding:0;font-size:13px;color:#d4d4e8}
   <h3>Portal Costs <a class="anchor" href="#step-4">#</a></h3>
 </div>
 
-<p>Switch to <strong>Portal Costs</strong> mode to configure each portal's behavior when closed. Set the cost and muffle values in the panel, then click on a portal node to apply them.</p>
+<p>Switch to <strong>Portals</strong> mode to configure each portal's behavior when closed. Set the cost and muffle values under the <strong>Portal Costs</strong> section of the panel, then click on a portal node to apply them.</p>
 
 <img src="SetPortalCosts.png" alt="Setting portal costs and muffle values" class="doc-img">
 
@@ -359,6 +360,34 @@ pre code{background:none;padding:0;font-size:13px;color:#d4d4e8}
   </ul>
   <p style="margin-bottom:0;margin-top:8px">With these values the pathfinder will prefer routing sound through the window when both are closed, and the sound that comes through it will be less muffled than what leaks through the door.</p>
 </div>
+
+
+<!-- ── Portal Sizes ── -->
+<h3 id="portal-sizes">Portal Sizes <a class="anchor" href="#portal-sizes">#</a></h3>
+
+<p>By default, an occluded sound exits through the <em>center</em> of its portal node. From far away that's completely fine — but up close it can be jarring. Picture standing right next to an open doorway while a sound plays down the hallway to the <strong>left</strong>: the path exits at the door node, so you hear the sound coming from the middle of the doorway, dead ahead — not from the left, where it's actually coming from.</p>
+
+<p><strong>Portal Sizes</strong> solve this. Give a portal node the dimensions of its opening, and at runtime Timbre slides the emitter along the portal's plane toward where the sound is actually coming from, clamped to the opening's bounds. A sound down the hall to the left gets pushed to the left edge of the doorway; a sound from above a tall window plays from its top edge.</p>
+
+<img src="SizedPortals1.png" alt="Setting a portal size in the editor" class="doc-img">
+
+<p>To set up a portal size:</p>
+<ol>
+  <li>Switch to <strong>Portals</strong> mode and find the <strong>Portal Size</strong> section in the panel.</li>
+  <li>Enter the opening's <strong>Portal Width</strong> and <strong>Portal Height</strong> in studs — typically just the size of the doorway or window the node sits in.</li>
+  <li>Hover over a portal node — a preview box shows the bounds you're about to apply.</li>
+  <li>Click the portal node to apply. Every sized portal draws its bounds as a box gizmo so you can sanity-check the fit at a glance.</li>
+</ol>
+
+<div class="callout info">
+  <div class="callout-title">Defaults &amp; rebaking</div>
+  <p style="margin-bottom:6px">Portal sizes default to <code>0 × 0</code>, which disables edge-sliding entirely — unsized portals behave exactly as before, with zero extra cost at runtime.</p>
+  <p style="margin-bottom:0">Sizes are purely a runtime positioning effect — changing them <strong>never requires a rebake</strong>.</p>
+</div>
+
+<img src="SizedPortals2.png" alt="Portal edge-sliding working in game" class="doc-img">
+
+<p>And now you can see the emitter being pushed to the edge of the portal — the sound properly comes from the left, right where it should!</p>
 
 
 <!-- ── Step 5 ── -->
