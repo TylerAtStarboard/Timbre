@@ -815,7 +815,7 @@ Timbre:<span class="fn">SetListener</span>(<span class="kw">nil</span>)</code></
   </tr>
   <tr>
     <td>MaxDistance</td>
-    <td>100</td>
+    <td>150</td>
     <td>Distance (in studs) at which the sound is no longer audible. Beyond this the sound won't be processed at all.</td>
   </tr>
   <tr>
@@ -839,7 +839,7 @@ Timbre:<span class="fn">SetListener</span>(<span class="kw">nil</span>)</code></
   </tr>
   <tr>
     <td>SoundBassRetention</td>
-    <td>0</td>
+    <td>1</td>
     <td>How much bass survives when the sound is muffled (0–1). At 0, bass drops off along with everything else. At 1, bass passes through walls almost untouched.</td>
   </tr>
   <tr>
@@ -854,8 +854,8 @@ Timbre:<span class="fn">SetListener</span>(<span class="kw">nil</span>)</code></
   </tr>
   <tr>
     <td>IncludeEntryAngle</td>
-    <td>false</td>
-    <td>Whether to include the angle from the source to the first node when calculating bend cost. Off by default for softer results — turn on for sounds that should react more precisely to geometry.</td>
+    <td>true</td>
+    <td>Whether to include the angle from the source to the first node when calculating bend cost. On by default for more precise geometry response — turn off for softer, more forgiving results.</td>
   </tr>
   <tr>
     <td>SoundDirectivity</td>
