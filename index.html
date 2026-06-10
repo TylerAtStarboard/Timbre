@@ -200,6 +200,7 @@ pre code{background:none;padding:0;font-size:13px;color:#d4d4e8}
     <a class="sidebar-link indent" href="#portal-sizes">Portal Sizes</a>
     <a class="sidebar-link indent" href="#step-5">5 — Test Paths</a>
     <a class="sidebar-link indent" href="#step-6">6 — Reverb Rooms</a>
+    <a class="sidebar-link indent" href="#manual-room-splitting">Manual Room Splitting</a>
     <a class="sidebar-link indent" href="#step-7">7 — Configure Rooms</a>
     <a class="sidebar-link indent" href="#presets">Presets</a>
     <a class="sidebar-link indent" href="#step-8">8 — Preview Sounds</a>
@@ -447,10 +448,19 @@ pre code{background:none;padding:0;font-size:13px;color:#d4d4e8}
   Automatic room detection relies on enclosed volumes formed by tagged border parts. If for some reason rooms didn't generate correctly, you can use <strong>Register from Selection</strong>. Select a model whose children are submodels — each submodel should contain parts that define a room's volume — and Timbre will register them as rooms.
 </div>
 
+
+<!-- ── Manual Room Splitting ── -->
+<h3 id="manual-room-splitting">Manual Room Splitting <a class="anchor" href="#manual-room-splitting">#</a></h3>
+
+<p>Sometimes you might want to split a large open space into multiple rooms, or create room boundaries in areas that don't have physical doors or walls — for example, separating an outdoor courtyard from a covered patio, or dividing an L-shaped hallway so each leg gets its own reverb.</p>
+
 <div class="callout info">
-  <div class="callout-title">Outdoor rooms</div>
-  If you have outdoor areas you'd like to register as a room (for outdoor reverb), you can create invisible tagged barrier parts to enclose the area, generate the rooms, and then delete the barriers once you're finished.
+  <div class="callout-title">Temporary border parts</div>
+  <p style="margin-bottom:8px">To do this, create blocker parts wherever you need a room boundary, tag them with your <strong>border tag</strong>, and click <strong>Update Rooms</strong>. Timbre will treat them as walls and split the space accordingly.</p>
+  <p style="margin-bottom:0">Once your rooms are generated and configured, you can safely delete the blocker parts in-game — the room data is already baked. They only need to exist at authoring time.</p>
 </div>
+
+<img src="RoomBorder.png" alt="Temporary border parts used to split rooms" class="doc-img">
 
 
 <!-- ── Step 7 ── -->
@@ -472,7 +482,7 @@ pre code{background:none;padding:0;font-size:13px;color:#d4d4e8}
 <ul>
   <li><strong>None</strong> — no reverb applied in this room.</li>
   <li><strong>Preset</strong> — a single reverb preset is applied uniformly throughout the room. Good for simple spaces like hallways or small rooms.</li>
-  <li><strong>Blend Nodes</strong> — multiple reverb presets are placed at specific positions within the room. The runtime blends between the nearest visible nodes using inverse-distance weighting. This is ideal for large or complex spaces where reverb should vary throughout the space.</li>
+  <li><strong>Blend Nodes</strong> — multiple reverb presets are placed at specific positions within the room. The runtime blends between the nearest visible nodes using inverse-distance weighting. This is ideal for large or complex spaces where reverb should vary throughout the space. But if you're splitting open rooms, it's probably unnecessary.</li>
 </ul>
 
 <p>In <strong>Preset</strong> mode, you simply pick a preset from the dropdown and it applies to the entire room.</p>
@@ -840,7 +850,7 @@ Timbre:<span class="fn">SetListener</span>(<span class="kw">nil</span>)</code></
   <tr>
     <td>SoundBassRetention</td>
     <td>1</td>
-    <td>How much bass survives when the sound is muffled (0–1). At 0, bass drops off along with everything else. At 1, bass passes through walls almost untouched.</td>
+    <td>How much bass survives when the sound is muffled (0–1). At 0, bass drops off along with everything else. At 1, bass passes through walls untouched.</td>
   </tr>
   <tr>
     <td>AirAbsorptionEnabled</td>
