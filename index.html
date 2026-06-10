@@ -105,6 +105,11 @@ pre code{background:none;padding:0;font-size:13px;color:#d4d4e8}
 .callout.warn .callout-title{color:var(--yellow)}
 .callout.danger .callout-title{color:var(--red)}
 
+/* ── Spotlight callout (standout design-philosophy box) ── */
+.callout.spotlight{border:1px solid rgba(232,169,74,0.45);border-left:3px solid var(--accent);background:linear-gradient(135deg,rgba(232,169,74,0.14) 0%,rgba(232,169,74,0.04) 60%,rgba(124,184,232,0.05) 100%);border-radius:10px;box-shadow:0 0 22px rgba(232,169,74,0.10),inset 0 1px 0 rgba(255,255,255,0.04);padding:16px 20px}
+.callout.spotlight .callout-title{color:var(--accent);display:flex;align-items:center;gap:7px;font-size:12.5px}
+.callout.spotlight .callout-title .spark{font-size:14px}
+
 /* ── Images ── */
 .doc-img{border-radius:8px;border:1px solid var(--border-2);max-width:100%;margin:8px auto 20px;display:block;box-shadow:0 4px 20px rgba(0,0,0,.35)}
 .doc-img-sm{max-width:420px}
@@ -255,6 +260,12 @@ pre code{background:none;padding:0;font-size:13px;color:#d4d4e8}
 <h2 id="overview">Overview <a class="anchor" href="#overview">#</a></h2>
 
 <p>Timbre is a library for space-aware <strong>occlusion</strong>, <strong>diffraction</strong>, and <strong>reverb</strong> within static environments. The goal is to make it easy to set up audio that reacts to the world in different ways based on its physical properties — sounds muffle behind walls, bend around corners, and ring differently depending on the room they're in.</p>
+
+<div class="callout spotlight">
+  <div class="callout-title"><span class="spark">✦</span> Approximation, not simulation</div>
+  <p style="margin-bottom:8px">Timbre does not aim to simulate sound acoustics realistically — instead, it aims to <strong>approximate</strong> these effects in a performant manner, well tuned for individual gameplay needs.</p>
+  <p style="margin-bottom:0">Rather than chasing one physically "correct" result, every sound exposes a rich set of <a href="#sound-params">properties</a> that shape how it behaves as it moves through your world — how much corners muffle it, how much bass survives a wall, how far it travels before the air swallows it, how directional it is, and how easily it leaks through closed doors. A gunshot can punch through a building while a voice drowns out behind a single door — you decide what serves your game, and it all stays cheap enough to run on dozens of sounds at once.</p>
+</div>
 
 <div class="callout info">
   <div class="callout-title">What does "static" mean here?</div>
