@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="description" content="Timbre — Performant physical occlusion & reverb for sounds in Roblox">
+<meta name="description" content="Timbre — Performant physical occlusion, diffraction & reverb for sounds in Roblox">
 <title>Timbre — Documentation</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -11,1303 +11,923 @@
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 :root{
-  --bg:        #141420;
-  --bg-soft:   #1a1a2c;
-  --bg-mute:   #22223a;
-  --bg-code:   #12121e;
-  --border:    #2a2a48;
-  --border-2:  #353558;
-  --text:      #c8c8de;
-  --text-2:    #9090aa;
-  --text-3:    #6a6a84;
-  --heading:   #ebebff;
-  --accent:    #e8a94a;
-  --accent-soft: rgba(232,169,74,0.10);
-  --accent-2:  #d4942e;
-  --accent-glow: rgba(232,169,74,0.25);
-  --link:      #7cb8e8;
-  --link-2:    #5a9cd4;
-  --green:     #6ac789;
-  --yellow:    #e2c56a;
-  --red:       #e85d6f;
-  --sidebar-w: 252px;
-  --content-w: 780px;
-  --nav-h: 66px;
-  --font: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
-  --mono: 'JetBrains Mono', 'Fira Code', monospace;
+  --bg:#141420;--bg-soft:#1a1a2c;--bg-mute:#22223a;--bg-code:#12121e;
+  --border:#2a2a48;--border-2:#353558;
+  --text:#c8c8de;--text-2:#9090aa;--text-3:#6a6a84;--heading:#ebebff;
+  --accent:#e8a94a;--accent-soft:rgba(232,169,74,0.10);--accent-2:#d4942e;--accent-glow:rgba(232,169,74,0.25);
+  --link:#7cb8e8;--link-2:#5a9cd4;--green:#6ac789;--yellow:#e2c56a;--red:#e85d6f;
+  --sidebar-w:260px;--content-w:800px;--nav-h:56px;
+  --font:'Inter',-apple-system,BlinkMacSystemFont,sans-serif;
+  --mono:'JetBrains Mono','Fira Code',monospace;
 }
-html{scroll-behavior:smooth;scroll-padding-top:calc(var(--nav-h) + 24px)}
+html{scroll-behavior:smooth}
 body{font-family:var(--font);background:var(--bg);color:var(--text);line-height:1.72;font-size:15px;-webkit-font-smoothing:antialiased}
-a{color:var(--link);text-decoration:none}
-a:hover{color:var(--link-2);text-decoration:underline}
-
-/* ── Top nav ── */
-.topnav{position:fixed;top:0;left:0;right:0;height:var(--nav-h);background:rgba(20,20,32,.88);backdrop-filter:blur(14px);border-bottom:1px solid var(--border);z-index:100;display:flex;align-items:center;padding:0 24px}
-.topnav-brand{display:flex;align-items:center;gap:10px}
-.topnav-brand img{width:56px;height:56px;border-radius:8px}
-.topnav-brand span{font-weight:700;font-size:16px;color:var(--heading);letter-spacing:-.3px}
-.topnav-brand .ver{font-weight:500;font-size:12px;color:var(--text-3);margin-left:2px}
-.topnav-links{margin-left:auto;display:flex;gap:20px;font-size:13.5px;font-weight:500}
-.topnav-links a{color:var(--text-2);transition:color .15s}
-.topnav-links a:hover{color:var(--heading);text-decoration:none}
-.menu-toggle{display:none;background:none;border:none;color:var(--text);font-size:22px;cursor:pointer;margin-left:auto;padding:4px}
-
-/* ── Sidebar ── */
-.sidebar{position:fixed;top:var(--nav-h);left:0;bottom:0;width:var(--sidebar-w);overflow-y:auto;padding:20px 14px 40px 18px;border-right:1px solid var(--border);background:var(--bg);z-index:90;scrollbar-width:thin;scrollbar-color:var(--border) transparent}
-.sidebar::-webkit-scrollbar{width:4px}
-.sidebar::-webkit-scrollbar-thumb{background:var(--border);border-radius:4px}
-.sidebar-group{margin-bottom:18px}
-.sidebar-group-title{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.9px;color:var(--text-3);padding:6px 10px;margin-bottom:2px}
-.sidebar-link{display:block;padding:4px 10px;border-radius:5px;font-size:13px;color:var(--text-2);transition:all .12s;line-height:1.5}
+a{color:var(--link);text-decoration:none}a:hover{color:var(--link-2);text-decoration:underline}
+.topnav{position:fixed;top:0;left:0;right:0;height:var(--nav-h);background:rgba(20,20,32,.92);backdrop-filter:blur(14px);border-bottom:1px solid var(--border);z-index:100;display:flex;align-items:center;padding:0 20px;gap:16px}
+.topnav-brand{display:flex;align-items:center;gap:8px;flex-shrink:0}
+.topnav-brand img{width:32px;height:32px;border-radius:6px}
+.topnav-brand span{font-weight:700;font-size:15px;color:var(--heading);letter-spacing:-.3px}
+.topnav-brand .ver{font-weight:500;font-size:11px;color:var(--text-3);margin-left:2px}
+.topnav-tabs{display:flex;gap:2px;margin-left:24px}
+.topnav-tab{padding:6px 14px;border-radius:6px;font-size:13px;font-weight:500;color:var(--text-2);cursor:pointer;transition:all .15s;border:none;background:none;font-family:var(--font)}
+.topnav-tab:hover{color:var(--heading);background:var(--bg-mute)}
+.topnav-tab.active{color:var(--accent);background:var(--accent-soft)}
+.menu-toggle{display:none;background:none;border:none;color:var(--text);font-size:20px;cursor:pointer;margin-left:auto;padding:4px}
+.sidebar{position:fixed;top:var(--nav-h);left:0;bottom:0;width:var(--sidebar-w);overflow-y:auto;padding:16px 10px 40px 14px;border-right:1px solid var(--border);background:var(--bg);z-index:90;scrollbar-width:thin;scrollbar-color:var(--border) transparent}
+.sidebar::-webkit-scrollbar{width:4px}.sidebar::-webkit-scrollbar-thumb{background:var(--border);border-radius:4px}
+.sidebar-section{margin-bottom:16px}
+.sidebar-section-title{font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:.9px;color:var(--text-3);padding:4px 10px;margin-bottom:2px}
+.sidebar-link{display:block;padding:5px 10px;border-radius:5px;font-size:13px;color:var(--text-2);transition:all .12s;line-height:1.45;cursor:pointer;border:none;background:none;width:100%;text-align:left;font-family:var(--font)}
 .sidebar-link:hover{color:var(--heading);background:var(--accent-soft);text-decoration:none}
 .sidebar-link.active{color:var(--accent);background:var(--accent-soft);font-weight:600}
-.sidebar-link.indent{padding-left:22px;font-size:12.5px}
-.sidebar-group-link{font-weight:600;font-size:13.5px;color:var(--heading) !important;letter-spacing:-.1px;margin-bottom:2px}
-.sidebar-group-link:hover{color:var(--accent) !important}
-.sidebar-group-link.active{color:var(--accent) !important}
-
-/* ── Code syntax ── */
-.kw{color:#c792ea}
-.fn{color:#82aaff}
-.str{color:#c3e88d}
-.num{color:#f78c6c}
-.cm{color:#5c6b7f;font-style:italic}
-.op{color:#89ddff}
-.ty{color:#ffcb6b}
-
-/* ── Content ── */
 .content-wrap{margin-left:var(--sidebar-w);padding-top:var(--nav-h)}
-.content{max-width:var(--content-w);margin:0 auto;padding:40px 36px 140px}
-
-h1{font-size:30px;font-weight:800;color:var(--heading);margin-bottom:16px;letter-spacing:-.6px;line-height:1.25}
-h2{font-size:22px;font-weight:700;color:var(--heading);margin-top:56px;margin-bottom:14px;padding-bottom:10px;border-bottom:1px solid var(--border);letter-spacing:-.3px;line-height:1.3}
-h3{font-size:17px;font-weight:600;color:var(--heading);margin-top:36px;margin-bottom:10px;letter-spacing:-.2px}
-h2 .anchor,h3 .anchor{color:var(--text-3);font-weight:400;margin-left:6px;opacity:0;transition:opacity .15s;font-size:.8em}
-h2:hover .anchor,h3:hover .anchor{opacity:1}
-p{margin-bottom:14px}
-ul,ol{padding-left:22px;margin-bottom:14px}
-li{margin-bottom:5px}
-li::marker{color:var(--accent)}
+.content{max-width:var(--content-w);margin:0 auto;padding:36px 36px 60px}
+.page{display:none}.page.active{display:block}
+h1{font-size:28px;font-weight:800;color:var(--heading);margin-bottom:14px;letter-spacing:-.5px;line-height:1.25}
+h2{font-size:21px;font-weight:700;color:var(--heading);margin-top:48px;margin-bottom:12px;padding-bottom:8px;border-bottom:1px solid var(--border);letter-spacing:-.3px}
+h3{font-size:16px;font-weight:600;color:var(--heading);margin-top:32px;margin-bottom:8px}
+p{margin-bottom:12px}
+ul,ol{padding-left:22px;margin-bottom:12px}li{margin-bottom:4px}li::marker{color:var(--accent)}
 strong{color:var(--heading);font-weight:600}
-hr{border:none;border-top:1px solid var(--border);margin:44px 0}
-
+hr{border:none;border-top:1px solid var(--border);margin:36px 0}
 code{font-family:var(--mono);font-size:13px;background:var(--bg-mute);padding:2px 6px;border-radius:4px;color:#d0c8f0}
-pre{background:var(--bg-code);border:1px solid var(--border);border-radius:8px;padding:18px 20px;overflow-x:auto;margin-bottom:18px;line-height:1.65}
+pre{background:var(--bg-code);border:1px solid var(--border);border-radius:8px;padding:16px 18px;overflow-x:auto;margin-bottom:16px;line-height:1.65}
 pre code{background:none;padding:0;font-size:13px;color:#d4d4e8}
-
-/* ── Callouts ── */
-.callout{border-left:3px solid var(--link);background:rgba(124,184,232,0.06);border-radius:0 8px 8px 0;padding:14px 18px;margin-bottom:18px;font-size:14px;line-height:1.65}
+.kw{color:#c792ea}.fn{color:#82aaff}.str{color:#c3e88d}.num{color:#f78c6c}.cm{color:#5c6b7f;font-style:italic}.op{color:#89ddff}.ty{color:#ffcb6b}
+.callout{border-left:3px solid var(--link);background:rgba(124,184,232,0.06);border-radius:0 8px 8px 0;padding:12px 16px;margin-bottom:16px;font-size:14px;line-height:1.65}
 .callout.info{border-color:var(--accent);background:var(--accent-soft)}
 .callout.warn{border-color:var(--yellow);background:rgba(226,197,106,0.06)}
 .callout.danger{border-color:var(--red);background:rgba(232,93,111,0.06)}
-.callout-title{font-weight:700;color:var(--heading);margin-bottom:4px;font-size:12px;text-transform:uppercase;letter-spacing:.5px}
+.callout-title{font-weight:700;color:var(--heading);margin-bottom:4px;font-size:11.5px;text-transform:uppercase;letter-spacing:.5px}
 .callout.info .callout-title{color:var(--accent)}
 .callout.warn .callout-title{color:var(--yellow)}
 .callout.danger .callout-title{color:var(--red)}
-
-/* ── Spotlight callout (standout design-philosophy box) ── */
-.callout.spotlight{border:1px solid rgba(232,169,74,0.45);border-left:3px solid var(--accent);background:linear-gradient(135deg,rgba(232,169,74,0.14) 0%,rgba(232,169,74,0.04) 60%,rgba(124,184,232,0.05) 100%);border-radius:10px;box-shadow:0 0 22px rgba(232,169,74,0.10),inset 0 1px 0 rgba(255,255,255,0.04);padding:16px 20px}
-.callout.spotlight .callout-title{color:var(--accent);display:flex;align-items:center;gap:7px;font-size:12.5px}
-.callout.spotlight .callout-title .spark{font-size:14px}
-
-/* ── Images ── */
-.doc-img{border-radius:8px;border:1px solid var(--border-2);max-width:100%;margin:8px auto 20px;display:block;box-shadow:0 4px 20px rgba(0,0,0,.35)}
+.callout.spotlight{border:1px solid rgba(232,169,74,0.45);border-left:3px solid var(--accent);background:linear-gradient(135deg,rgba(232,169,74,0.14) 0%,rgba(232,169,74,0.04) 60%,rgba(124,184,232,0.05) 100%);border-radius:10px;box-shadow:0 0 22px rgba(232,169,74,0.10),inset 0 1px 0 rgba(255,255,255,0.04);padding:14px 18px}
+.callout.spotlight .callout-title{color:var(--accent);display:flex;align-items:center;gap:7px;font-size:12px}
+.doc-img{border-radius:8px;border:1px solid var(--border-2);max-width:100%;margin:8px auto 18px;display:block;box-shadow:0 4px 20px rgba(0,0,0,.35)}
 .doc-img-sm{max-width:420px}
-
-/* ── API signatures ── */
-.api-sig{background:var(--bg-code);border:1px solid var(--border);border-radius:8px;padding:14px 18px;margin-bottom:14px;overflow-x:auto}
-.api-sig code{font-size:13.5px;background:none;padding:0}
-
-/* ── Param table ── */
-.param-table{width:100%;border-collapse:collapse;margin-bottom:18px;font-size:14px}
-.param-table th{text-align:left;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.7px;color:var(--text-3);padding:6px 12px;border-bottom:1px solid var(--border)}
-.param-table td{padding:8px 12px;border-bottom:1px solid var(--border);vertical-align:top}
-.param-table td:first-child{color:var(--accent);font-family:var(--mono);font-size:13px;white-space:nowrap}
+.api-sig{background:var(--bg-code);border:1px solid var(--border);border-radius:8px;padding:12px 16px;margin-bottom:12px;overflow-x:auto}
+.api-sig code{font-size:13px;background:none;padding:0}
+.param-table,.settings-table{width:100%;border-collapse:collapse;margin-bottom:16px;font-size:14px}
+.param-table th,.settings-table th{text-align:left;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:.7px;color:var(--text-3);padding:6px 12px;border-bottom:1px solid var(--border)}
+.param-table td,.settings-table td{padding:7px 12px;border-bottom:1px solid var(--border);vertical-align:top}
+.param-table td:first-child,.settings-table td:first-child{color:var(--accent);font-family:var(--mono);font-size:13px;white-space:nowrap}
 .param-table td:nth-child(2){color:#c792ea;font-family:var(--mono);font-size:13px;white-space:nowrap}
-
-/* ── Settings tables ── */
-.settings-table{width:100%;border-collapse:collapse;margin-bottom:18px;font-size:14px}
-.settings-table th{text-align:left;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.7px;color:var(--text-3);padding:6px 12px;border-bottom:1px solid var(--border)}
-.settings-table td{padding:7px 12px;border-bottom:1px solid var(--border);vertical-align:top}
-.settings-table td:first-child{color:var(--accent);font-family:var(--mono);font-size:13px;white-space:nowrap}
 .settings-table td:nth-child(2){color:var(--text-2);font-family:var(--mono);font-size:13px;white-space:nowrap;text-align:center}
-.settings-table td:last-child{color:var(--text)}
-
-/* ── Example cards ── */
-.example-card{background:var(--bg-soft);border:1px solid var(--border-2);border-radius:10px;padding:22px 24px;margin-bottom:24px}
-.example-card-title{font-size:18px;font-weight:700;color:var(--heading);margin-bottom:6px;display:flex;align-items:center;gap:10px}
-.example-card-title .icon{font-size:22px}
-.example-card-goal{font-size:14px;color:var(--text-2);margin-bottom:14px}
-.example-card ul{margin-bottom:14px}
-.example-card pre{margin-bottom:0}
-
-/* ── Hero ── */
-.hero{padding:52px 0 12px;display:flex;align-items:center;gap:20px}
-.hero img{width:70px;height:70px;border-radius:12px;box-shadow:0 0 24px var(--accent-glow)}
-.hero-text h1{font-size:38px;margin-bottom:2px;letter-spacing:-.8px;background:linear-gradient(135deg,var(--accent) 0%,#f0d080 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
-.hero-text .subtitle{font-size:14px;color:var(--text-2);font-weight:500;letter-spacing:.2px}
-
-/* ── Step headers ── */
-.step-header{display:flex;align-items:center;gap:12px;margin-top:40px;margin-bottom:12px}
-.step-num{width:30px;height:30px;border-radius:50%;background:var(--accent);color:var(--bg);font-weight:800;font-size:14px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
-.step-header h3{margin:0;font-size:18px}
-
-/* ── Section label ── */
-.section-label{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:1.2px;color:var(--accent);margin-bottom:6px;margin-top:52px}
-
-/* ── Responsive ── */
-@media(max-width:960px){
-  .sidebar{transform:translateX(-100%);transition:transform .25s ease}
-  .sidebar.open{transform:translateX(0)}
-  .content-wrap{margin-left:0}
-  .menu-toggle{display:block}
-  .topnav-links{display:none}
-  .content{padding:32px 20px 100px}
-  h1{font-size:26px}
-  h2{font-size:20px}
-  .hero-text h1{font-size:30px}
+.example-card{background:var(--bg-soft);border:1px solid var(--border-2);border-radius:10px;padding:20px 22px;margin-bottom:20px}
+.example-card-title{font-size:17px;font-weight:700;color:var(--heading);margin-bottom:6px;display:flex;align-items:center;gap:10px}
+.example-card-title .icon{font-size:20px}
+.example-card-goal{font-size:14px;color:var(--text-2);margin-bottom:12px}
+.hero{padding:40px 0 8px;display:flex;align-items:center;gap:18px}
+.hero img{width:60px;height:60px;border-radius:10px;box-shadow:0 0 24px var(--accent-glow)}
+.hero-text h1{font-size:34px;margin-bottom:0;background:linear-gradient(135deg,var(--accent) 0%,#f0d080 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.hero-text .subtitle{font-size:13px;color:var(--text-2);font-weight:500;letter-spacing:.2px}
+.step-header{display:flex;align-items:center;gap:10px;margin-top:36px;margin-bottom:10px}
+.step-num{width:28px;height:28px;border-radius:50%;background:var(--accent);color:var(--bg);font-weight:800;font-size:13px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.step-header h3{margin:0;font-size:17px}
+.page-nav{display:flex;justify-content:space-between;align-items:stretch;margin-top:48px;padding-top:24px;border-top:1px solid var(--border);gap:16px}
+.page-nav-btn{display:flex;flex-direction:column;padding:14px 18px;border-radius:8px;border:1px solid var(--border);background:var(--bg-soft);cursor:pointer;transition:all .15s;text-decoration:none;min-width:0;flex:1;max-width:50%}
+.page-nav-btn:hover{border-color:var(--accent);background:var(--accent-soft);text-decoration:none}
+.page-nav-btn .label{font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.6px;color:var(--text-3);margin-bottom:4px}
+.page-nav-btn .title{font-size:14px;font-weight:600;color:var(--heading);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.page-nav-btn.next{text-align:right;margin-left:auto}
+.page-nav-btn.prev{text-align:left;margin-right:auto}
+.page-nav-spacer{flex:1}
+.section-label{font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.2px;color:var(--accent);margin-bottom:4px;margin-top:0}
+@media(max-width:900px){
+  .sidebar{transform:translateX(-100%);transition:transform .25s ease}.sidebar.open{transform:translateX(0)}
+  .content-wrap{margin-left:0}.menu-toggle{display:block}
+  .topnav-tabs{display:none}
+  .content{padding:28px 18px 80px}
+  h1{font-size:24px}h2{font-size:19px}
+  .hero-text h1{font-size:28px}
+  .page-nav{flex-direction:column}
+  .page-nav-btn{max-width:100%}
 }
 </style>
 </head>
 <body>
 
-<!-- ═══════════════════════ TOP NAV ═══════════════════════ -->
 <nav class="topnav">
   <div class="topnav-brand">
     <img src="TimbreLogo.png" alt="Timbre">
     <span>Timbre <span class="ver">v1.0</span></span>
   </div>
-  <button class="menu-toggle" onclick="document.querySelector('.sidebar').classList.toggle('open')" aria-label="Toggle menu">☰</button>
-  <div class="topnav-links">
-    <a href="#overview">Docs</a>
-    <a href="https://github.com/" target="_blank">GitHub</a>
+  <div class="topnav-tabs">
+    <button class="topnav-tab" data-section="getting-started">Getting Started</button>
+    <button class="topnav-tab" data-section="scene-editor">Scene Editor</button>
+    <button class="topnav-tab" data-section="runtime">Runtime</button>
+    <button class="topnav-tab" data-section="reference">Reference</button>
   </div>
+  <button class="menu-toggle" onclick="document.querySelector('.sidebar').classList.toggle('open')" aria-label="Toggle menu">☰</button>
 </nav>
 
-<!-- ═══════════════════════ SIDEBAR ═══════════════════════ -->
 <aside class="sidebar" id="sidebar">
-  <div class="sidebar-group">
-    <div class="sidebar-group-title">Getting Started</div>
-    <a class="sidebar-link" href="#overview">Overview</a>
+  <div class="sidebar-section" data-section="getting-started">
+    <div class="sidebar-section-title">Getting Started</div>
+    <button class="sidebar-link" data-page="overview">Overview</button>
+    <button class="sidebar-link" data-page="how-it-works">How It Works</button>
   </div>
-  <div class="sidebar-group">
-    <a class="sidebar-link sidebar-group-link" href="#scene-editor">Scene Editor</a>
-    <a class="sidebar-link indent" href="#step-1">1 — Load / Unload Map</a>
-    <a class="sidebar-link indent" href="#step-2">2 — Create Nodes</a>
-    <a class="sidebar-link indent" href="#portal-nodes">Portal Nodes</a>
-    <a class="sidebar-link indent" href="#step-3">3 — Connect &amp; Bake</a>
-    <a class="sidebar-link indent" href="#step-4">4 — Portal Costs</a>
-    <a class="sidebar-link indent" href="#portal-sizes">Portal Sizes</a>
-    <a class="sidebar-link indent" href="#step-5">5 — Test Paths</a>
-    <a class="sidebar-link indent" href="#step-6">6 — Reverb Rooms</a>
-    <a class="sidebar-link indent" href="#manual-room-splitting">Manual Room Splitting</a>
-    <a class="sidebar-link indent" href="#step-7">7 — Configure Rooms</a>
-    <a class="sidebar-link indent" href="#presets">Presets</a>
-    <a class="sidebar-link indent" href="#step-8">8 — Preview Sounds</a>
+  <div class="sidebar-section" data-section="scene-editor">
+    <div class="sidebar-section-title">Scene Editor</div>
+    <button class="sidebar-link" data-page="scene-setup">Essential Scene Setup</button>
+    <button class="sidebar-link" data-page="reverb-rooms">Reverb Rooms</button>
   </div>
-  <div class="sidebar-group">
-    <a class="sidebar-link sidebar-group-link" href="#runtime">Timbre Runtime</a>
-    <a class="sidebar-link indent" href="#rt-step-1">1 — Set Tags</a>
-    <a class="sidebar-link indent" href="#rt-step-2">2 — Start</a>
-    <a class="sidebar-link indent" href="#rt-step-3">3 — Load Map</a>
-    <a class="sidebar-link indent" href="#rt-step-4">4 — Portal Events</a>
-    <a class="sidebar-link indent" href="#rt-step-5">5 — Playing Audio</a>
-    <a class="sidebar-link indent" href="#rt-sound-profiles">Sound Profiles</a>
-    <a class="sidebar-link indent" href="#rt-attach">Timbre:Attach()</a>
-    <a class="sidebar-link indent" href="#rt-detach">Timbre:Detach()</a>
-    <a class="sidebar-link indent" href="#rt-setlistener">Timbre:SetListener()</a>
+  <div class="sidebar-section" data-section="runtime">
+    <div class="sidebar-section-title">Runtime</div>
+    <button class="sidebar-link" data-page="runtime-setup">Setup</button>
+    <button class="sidebar-link" data-page="playing-audio">Playing Audio</button>
+    <button class="sidebar-link" data-page="volumetric-audio">Volumetric Audio</button>
+    <button class="sidebar-link" data-page="ambient-sounds">Ambient Sounds</button>
   </div>
-  <div class="sidebar-group">
-    <a class="sidebar-link sidebar-group-link" href="#sound-params">Sound Parameters</a>
-    <a class="sidebar-link indent" href="#sp-distance">Distance &amp; Rolloff</a>
-    <a class="sidebar-link indent" href="#sp-diffraction">Diffraction</a>
-    <a class="sidebar-link indent" href="#sp-direct-occlusion">Direct Occlusion</a>
-    <a class="sidebar-link indent" href="#sp-portals">Portals</a>
-    <a class="sidebar-link indent" href="#sp-qol">Convenience</a>
-  </div>
-  <div class="sidebar-group">
-    <a class="sidebar-link sidebar-group-link" href="#sp-examples">Sound Parameters - Examples</a>
-  </div>
-  <div class="sidebar-group">
-    <a class="sidebar-link sidebar-group-link" href="#global-settings">Global Settings</a>
-    <a class="sidebar-link indent" href="#gs-audio">Audio</a>
-    <a class="sidebar-link indent" href="#gs-listener">Listener</a>
-    <a class="sidebar-link indent" href="#gs-reverb">Reverb</a>
-    <a class="sidebar-link indent" href="#gs-budgets">Frame Budgets</a>
-    <a class="sidebar-link indent" href="#gs-staggering">Staggering</a>
-    <a class="sidebar-link indent" href="#gs-optimizations">Optimizations</a>
-    <a class="sidebar-link indent" href="#gs-pooling">Pooling</a>
-  </div>
-  <div class="sidebar-group">
-    <a class="sidebar-link sidebar-group-link" href="#debug">Debug</a>
+  <div class="sidebar-section" data-section="reference">
+    <div class="sidebar-section-title">Reference</div>
+    <button class="sidebar-link" data-page="sound-params">Sound Parameters</button>
+    <button class="sidebar-link" data-page="global-settings">Global Settings</button>
+    <button class="sidebar-link" data-page="debug">Debug</button>
   </div>
 </aside>
 
-<!-- ═══════════════════════ CONTENT ═══════════════════════ -->
 <div class="content-wrap">
 <main class="content">
 
-<!-- ── Hero ── -->
+<!-- ══════════════ OVERVIEW ══════════════ -->
+<div class="page" id="page-overview">
 <div class="hero">
   <img src="TimbreLogo.png" alt="Timbre Logo">
-  <div class="hero-text">
-    <h1>Timbre V1.0</h1>
-    <div class="subtitle">Performant physical occlusion & reverb for sounds in Roblox</div>
-  </div>
+  <div class="hero-text"><h1>Timbre V1.0</h1><div class="subtitle">Performant physical occlusion, diffraction &amp; reverb for sounds in Roblox</div></div>
 </div>
-
-<!-- ═══════════════════════ OVERVIEW ═══════════════════════ -->
 <div class="section-label">Getting Started</div>
-<h2 id="overview">Overview <a class="anchor" href="#overview">#</a></h2>
-
-<p>Timbre is a library for space-aware <strong>occlusion</strong>, <strong>diffraction</strong>, and <strong>reverb</strong> within static environments. The goal is to make it easy to set up audio that reacts to the world in different ways based on its physical properties — sounds muffle behind walls, bend around corners, and ring differently depending on the room they're in.</p>
-
+<h2>Overview</h2>
+<p>Timbre is a library for space-aware <strong>occlusion</strong>, <strong>diffraction</strong>, and <strong>reverb</strong> within static environments. Sounds muffle behind walls, bend around corners, and ring differently depending on the room they're in.</p>
 <div class="callout spotlight">
   <div class="callout-title"><span class="spark">✦</span> Approximation, not simulation</div>
-  <p style="margin-bottom:8px">Timbre does not aim to simulate sound acoustics realistically — instead, it aims to <strong>approximate</strong> these effects in a performant manner, well tuned for individual gameplay needs.</p>
-  <p style="margin-bottom:0">Rather than chasing one physically "correct" result, every sound exposes a rich set of <a href="#sound-params">properties</a> that shape how it behaves as it moves through your world — how much corners muffle it, how much bass survives a wall, how far it travels before the air swallows it, how directional it is, and how easily it leaks through closed doors. A gunshot can punch through a building while a voice drowns out behind a single door — you decide what serves your game, and it all stays cheap enough to run on dozens of sounds at once.</p>
+  <p style="margin-bottom:8px">Timbre does not aim to simulate sound acoustics realistically or considers physical materials — instead, it aims to <strong>approximate</strong> energy loss from sound bending around corners, through doors/windows, and through open space. It tries to be relatively cheap and well tuned for individual gameplay needs.</p>
+  <p style="margin-bottom:0">Every sound exposes a rich set of <a href="#" onclick="goTo('sound-params');return false">properties</a> that shape how it behaves — how much corners muffle it, how much bass survives a wall, how far it travels before the air swallows it, how directional it is, and how easily it leaks through closed doors. A gunshot can punch through a building while a voice may drown out behind a single door.</p>
 </div>
-
 <div class="callout info">
   <div class="callout-title">What does "static" mean here?</div>
-  Static means no geometry is being added or removed at runtime. The walls, floors, and ceilings of your map stay fixed. However, Timbre fully supports <strong>dynamic openings</strong> through its portal system — doors, windows, breakable walls, and similar objects can be opened and closed at runtime, and the audio graph will update instantly.
+  Static means no geometry is being added or removed at runtime. The walls, floors, and ceilings of your map stay fixed. However, Timbre fully supports <strong>dynamic openings</strong> through its portal system — doors, windows, pre-authored breakable wall segments, and similar objects can be opened and closed at runtime, and the audio graph will update accordingly.
 </div>
+<video src="TimbreVideo.mp4" controls playsinline muted style="width:100%;border-radius:8px;border:1px solid var(--border-2);margin:8px 0 18px;display:block;box-shadow:0 4px 20px rgba(0,0,0,.35)"></video>
 
 <p>Timbre has two main pieces:</p>
 <ul>
-  <li><strong>Scene Editor</strong> — a Studio plugin for placing propagation nodes, configuring portals, generating reverb rooms, and testing paths before you ship.</li>
+  <li><strong>Scene Editor</strong> — a Studio plugin for placing propagation nodes, configuring portals, generating reverb rooms, and testing paths.</li>
   <li><strong>Runtime Module</strong> — the client-side module that runs in-game, handling all occlusion, diffraction, and reverb in real time.</li>
 </ul>
-
-
-<!-- ═══════════════════════ SCENE EDITOR ═══════════════════════ -->
-<div class="section-label">Scene Editor</div>
-<h2 id="scene-editor">Scene Editor Guide <a class="anchor" href="#scene-editor">#</a></h2>
-
-<p>The Timbre Scene Editor is a Studio plugin with two main tools:</p>
+<h3>Features</h3>
 <ul>
-  <li><strong>Node Editor</strong> — lets you create nodes, create portal nodes, create connections between them, and then bake and test your paths.</li>
-  <li><strong>Room Editor</strong> <em>(optional)</em> — lets you automatically (or manually) generate reverb rooms, then configure reverb properties for each room.</li>
+  <li><strong>Diffraction</strong> — sounds reposition to the nearest visible exit node around corners, muffled by path cost and bend angles.</li>
+  <li><strong>Direct Occlusion</strong> — a second "through the wall" channel that plays at the source position with muffling when the listener is close.</li>
+  <li><strong>Spatial Reverb</strong> — room-based reverb with per-room presets or per-node blended reverb via inverse-distance weighting.</li>
+  <li><strong>Volumetric Audio</strong> — sounds that emit from the entire surface of a part (boxes, spheres, cylinders) rather than a single point.</li>
+  <li><strong>Ambient Sounds</strong> — omnidirectional outdoor sounds that automatically diffract through portals when the listener is inside.</li>
+  <li><strong>Dynamic Portals</strong> — doors, windows, and other openings can be toggled at runtime with configurable cost and muffle penalties.</li>
+  <li><strong>Portal Edge-Sliding</strong> — sized portals slide the emitter toward where the sound is actually coming from, instead of dead-center in the doorway.</li>
+  <li><strong>Instance Pooling</strong> — pre-allocated audio graph slots avoid runtime Instance creation.</li>
+  <li><strong>Frame Budgets</strong> — all expensive work (raycasts, diffraction, reverb) is budgeted per-frame with staggering and priority sorting.</li>
+  <li><strong>Sound Profiles</strong> — reusable parameter presets.</li>
+  <li><strong>Concurrency Groups</strong> — automatic voice limiting per category (for things like humming lights where there might be many in one area).</li>
 </ul>
-
-
-<!-- ── Step 1 ── -->
-<div class="step-header" id="step-1">
-  <div class="step-num">1</div>
-  <h3>Load / Unload Map <a class="anchor" href="#step-1">#</a></h3>
 </div>
 
-<p>The first thing you need to do is select a <code>Model</code> in the Explorer that represents your map, then click <strong>Load from Selection</strong> to load it into the editor. All node data, baked paths, and reverb room data will be stored as attributes on this model.</p>
+<!-- ══════════════ ESSENTIAL SCENE SETUP ══════════════ -->
 
+<!-- ══════════════ HOW IT WORKS ══════════════ -->
+<div class="page" id="page-how-it-works">
+<div class="section-label">Getting Started</div>
+<h1>How It Works</h1>
+
+
+<p>Before diving into the editor, here's the core idea. Timbre uses a graph of <strong>propagation nodes</strong> placed around your map — at wall corners, doorways, and openings. When a sound plays, Timbre figures out how it reaches the listener by checking which nodes each side can "see," then finding the cheapest path through the graph.</p>
+
+<p>The sound gets <strong>repositioned</strong> to the exit node closest to the listener and <strong>muffled</strong> based on how far the path traveled and how many corners it bent around. If the listener has a direct line of sight to the source, the sound just plays normally — no diffraction needed.</p>
+
+<div style="background:var(--bg-soft);border:1px solid var(--border-2);border-radius:10px;padding:16px 16px 10px;margin:16px 0 20px">
+<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;flex-wrap:wrap;gap:8px">
+<span style="font-size:13px;font-weight:600;color:var(--heading)">Drag the source and listener to explore</span>
+<button id="demo-toggle" style="font-family:var(--font);font-size:12px;font-weight:600;padding:5px 14px;border-radius:5px;border:1px solid #e8a94a;background:var(--bg-mute);color:#e8a94a;cursor:pointer">Close Door</button>
+</div>
+<canvas id="demo-cv" style="width:100%;border-radius:6px;cursor:grab;display:block;touch-action:none"></canvas>
+<div id="demo-info" style="font-size:12px;color:var(--text-2);padding:8px 2px 2px;font-family:var(--mono);line-height:1.6"></div>
+</div>
+<script>
+(function(){
+var cv=document.getElementById('demo-cv'),cx=cv.getContext('2d'),nfo=document.getElementById('demo-info');
+var W=700,H=380,dpr=Math.min(window.devicePixelRatio||1,2);
+cv.width=W*dpr;cv.height=H*dpr;cv.style.aspectRatio=W+'/'+H;cx.scale(dpr,dpr);
+var doorOpen=true,drag=null,src={x:500,y:100},lst={x:80,y:140};
+var walls=[
+  [40,40,280,40],[40,40,40,340],[40,340,280,340],[280,40,280,150],[280,220,280,340],
+  [150,40,150,180],[40,250,130,250],
+  [320,40,640,40],[640,40,640,340],[320,340,640,340],[320,40,320,150],[320,220,320,340],
+  [480,40,480,160],[420,340,420,260],
+  [640,220,526,220],[530,216,530,310]
+];
+var door=[300,150,300,220];
+var N=[{x:150,y:184},{x:134,y:250},{x:300,y:185,p:1},{x:480,y:164},{x:420,y:256},{x:276,y:148},{x:276,y:222},{x:324,y:148},{x:324,y:222}];
+var E=[[0,1],[0,5],[0,6],[1,5],[1,6],[5,6],[5,2],[6,2],[0,2],[1,2],[2,7],[2,8],[2,3],[2,4],[7,8],[3,7],[3,8],[4,7],[4,8],[3,4]];
+var adj=[];N.forEach(function(_,i){adj[i]=[]});
+E.forEach(function(e){adj[e[0]].push(e[1]);adj[e[1]].push(e[0])});
+function si(x1,y1,x2,y2,x3,y3,x4,y4){var d=(x2-x1)*(y4-y3)-(y2-y1)*(x4-x3);if(Math.abs(d)<1e-10)return false;var t=((x3-x1)*(y4-y3)-(y3-y1)*(x4-x3))/d;var u=((x3-x1)*(y2-y1)-(y3-y1)*(x2-x1))/d;return t>0.003&&t<0.997&&u>0.003&&u<0.997}
+function hw(ax,ay,bx,by){for(var i=0;i<walls.length;i++){var w=walls[i];if(si(ax,ay,bx,by,w[0],w[1],w[2],w[3]))return true}return false}
+function oc(ax,ay,bx,by){if(hw(ax,ay,bx,by))return true;return!doorOpen&&si(ax,ay,bx,by,door[0],door[1],door[2],door[3])}
+function vn(px,py){var r=[];for(var i=0;i<N.length;i++)if(!hw(px,py,N[i].x,N[i].y))r.push(i);return r}
+function ds(a,b){return Math.hypot(a.x-b.x,a.y-b.y)}
+function ag(ax,ay,bx,by,cx2,cy){var d0x=bx-ax,d0y=by-ay,d1x=cx2-bx,d1y=cy-by;var m0=Math.hypot(d0x,d0y),m1=Math.hypot(d1x,d1y);if(m0<.01||m1<.01)return 0;return Math.acos(Math.max(-1,Math.min(1,(d0x*d1x+d0y*d1y)/(m0*m1))))}
+function fp(sv,lv){if(!sv.length||!lv.length)return null;var best=null,bestC=1e9;for(var s=0;s<sv.length;s++){var sn=sv[s],cost=N.map(function(){return 1e9}),prev=N.map(function(){return-1}),done=new Set();cost[sn]=ds(src,N[sn]);for(var it=0;it<N.length;it++){var mn=-1,mc=1e9;for(var i=0;i<N.length;i++)if(!done.has(i)&&cost[i]<mc){mc=cost[i];mn=i}if(mn<0)break;done.add(mn);for(var j=0;j<adj[mn].length;j++){var nb=adj[mn][j],nc=cost[mn]+ds(N[mn],N[nb]);if(nc<cost[nb]){cost[nb]=nc;prev[nb]=mn}}}for(var l=0;l<lv.length;l++){var en=lv[l],tc=cost[en]+ds(N[en],lst);if(tc<bestC){bestC=tc;var p=[en],c=en;while(prev[c]>=0){c=prev[c];p.unshift(c)}best={ids:p,cost:bestC}}}}return best}
+function draw(){
+cx.clearRect(0,0,W,H);cx.fillStyle='#12121e';cx.fillRect(0,0,W,H);
+cx.fillStyle='rgba(232,93,111,0.05)';cx.fillRect(530,220,110,120);
+cx.save();cx.setLineDash([4,4]);cx.strokeStyle='rgba(232,93,111,0.18)';cx.lineWidth=1;cx.strokeRect(531,221,108,118);cx.restore();
+cx.fillStyle='rgba(232,93,111,0.35)';cx.font='bold 9px Inter,sans-serif';cx.textAlign='center';
+cx.fillText('NO NODES HERE',585,275);cx.font='8px Inter,sans-serif';cx.fillText('(missing corner node)',585,288);
+cx.fillStyle='#33334d';cx.font='600 13px Inter,sans-serif';cx.textAlign='center';
+cx.fillText('Room A',100,170);cx.fillText('Room B',450,120);
+cx.fillStyle='#44445e';cx.font='bold 8px Inter,sans-serif';cx.textAlign='left';cx.fillText('BORDER',44,36);
+cx.strokeStyle='rgba(90,90,120,0.65)';cx.lineWidth=5;cx.lineCap='round';
+walls.forEach(function(w){cx.beginPath();cx.moveTo(w[0],w[1]);cx.lineTo(w[2],w[3]);cx.stroke()});
+cx.strokeStyle=doorOpen?'rgba(232,169,74,0.12)':'rgba(232,169,74,0.8)';
+cx.lineWidth=5;cx.beginPath();cx.moveTo(door[0],door[1]);cx.lineTo(door[2],door[3]);cx.stroke();
+cx.fillStyle=doorOpen?'rgba(212,148,46,0.3)':'#d4942e';cx.font='bold 8px Inter,sans-serif';cx.textAlign='center';
+cx.fillText('PORTAL',300,door[1]-8);
+cx.strokeStyle='rgba(124,184,232,0.1)';cx.lineWidth=1;
+E.forEach(function(e){cx.beginPath();cx.moveTo(N[e[0]].x,N[e[0]].y);cx.lineTo(N[e[1]].x,N[e[1]].y);cx.stroke()});
+var sv=vn(src.x,src.y),lv=vn(lst.x,lst.y),ocd=oc(src.x,src.y,lst.x,lst.y);
+var path=null,ac=0,pm=0;
+cx.save();cx.setLineDash([3,3]);cx.strokeStyle='rgba(106,199,137,0.12)';cx.lineWidth=1;
+lv.forEach(function(i){cx.beginPath();cx.moveTo(lst.x,lst.y);cx.lineTo(N[i].x,N[i].y);cx.stroke()});cx.restore();
+if(!ocd){cx.save();cx.setLineDash([5,5]);cx.strokeStyle='rgba(106,199,137,0.5)';cx.lineWidth=2;cx.beginPath();cx.moveTo(src.x,src.y);cx.lineTo(lst.x,lst.y);cx.stroke();cx.restore()}
+else if(sv.length&&lv.length){path=fp(sv,lv);if(path){var pts=[src];path.ids.forEach(function(id){pts.push(N[id])});pts.push(lst);for(var i=1;i<pts.length-1;i++)ac+=ag(pts[i-1].x,pts[i-1].y,pts[i].x,pts[i].y,pts[i+1].x,pts[i+1].y);pm=(!doorOpen&&path.ids.indexOf(2)>=0)?0.5:0;cx.save();cx.setLineDash([6,4]);cx.strokeStyle='#6ac789';cx.lineWidth=2.5;cx.beginPath();cx.moveTo(src.x,src.y);path.ids.forEach(function(id){cx.lineTo(N[id].x,N[id].y)});cx.lineTo(lst.x,lst.y);cx.stroke();cx.restore();var ex=N[path.ids[path.ids.length-1]];cx.beginPath();cx.arc(ex.x,ex.y,9,0,Math.PI*2);cx.strokeStyle='#6ac789';cx.lineWidth=2;cx.stroke();cx.fillStyle='rgba(106,199,137,0.1)';cx.fill();cx.fillStyle='#6ac789';cx.font='bold 8px Inter,sans-serif';cx.textAlign='center';cx.fillText('EXIT',ex.x,ex.y-13)}}
+N.forEach(function(n){cx.beginPath();cx.arc(n.x,n.y,n.p?5.5:4,0,Math.PI*2);cx.fillStyle=n.p?'#e8a94a':'#7cb8e8';cx.globalAlpha=0.85;cx.fill();cx.globalAlpha=1});
+cx.beginPath();cx.arc(src.x,src.y,14,0,Math.PI*2);cx.fillStyle='rgba(247,140,108,0.08)';cx.fill();cx.strokeStyle='#f78c6c';cx.lineWidth=2;cx.stroke();cx.fillStyle='#f78c6c';cx.font='14px sans-serif';cx.textAlign='center';cx.fillText('\u{1F50A}',src.x,src.y+5);cx.font='bold 9px Inter,sans-serif';cx.fillText('SOURCE',src.x,src.y+27);
+cx.beginPath();cx.arc(lst.x,lst.y,14,0,Math.PI*2);cx.fillStyle='rgba(106,199,137,0.08)';cx.fill();cx.strokeStyle='#6ac789';cx.lineWidth=2;cx.stroke();cx.fillStyle='#6ac789';cx.font='14px sans-serif';cx.textAlign='center';cx.fillText('\u{1F442}',lst.x,lst.y+5);cx.font='bold 9px Inter,sans-serif';cx.fillText('LISTENER',lst.x,lst.y+27);
+var wn=[];
+if(!sv.length){wn.push({x:src.x,y:src.y,w:'source'});cx.beginPath();cx.arc(src.x,src.y,20,0,Math.PI*2);cx.strokeStyle='#e85d6f';cx.lineWidth=3;cx.stroke()}
+if(!lv.length){wn.push({x:lst.x,y:lst.y,w:'listener'});cx.beginPath();cx.arc(lst.x,lst.y,20,0,Math.PI*2);cx.strokeStyle='#e85d6f';cx.lineWidth=3;cx.stroke()}
+if(wn.length){var names=wn.map(function(w){return w.w}).join(' & ');var wx=wn.reduce(function(s,w){return s+w.x},0)/wn.length;var wy=Math.min.apply(null,wn.map(function(w){return w.y}))-44;if(wy<16)wy=Math.max.apply(null,wn.map(function(w){return w.y}))+40;var txt='\u26A0 No nodes visible for '+names+' \u2014 no audio!';cx.font='bold 11px Inter,sans-serif';var tw=cx.measureText(txt).width;cx.beginPath();cx.roundRect(wx-tw/2-12,wy-13,tw+24,28,6);cx.fillStyle='rgba(232,93,111,0.92)';cx.fill();cx.fillStyle='#fff';cx.textAlign='center';cx.fillText(txt,wx,wy+1)}
+var h='';
+if(wn.length)h='<span style="color:#e85d6f;font-weight:700">\u26A0 No nodes visible \u2014 player would hear nothing here!</span>';
+else if(!ocd)h='<span style="color:#6ac789">\u2714 Direct line of sight</span> \u2014 sound plays normally, no diffraction';
+else if(path){var bends=Math.max(0,path.ids.length-1);h='Path: <span style="color:#6ac789">'+Math.round(path.cost)+' studs</span> | Bends: <span style="color:#6ac789">'+bends+'</span> | Angle cost: <span style="color:#6ac789">'+(ac/Math.PI*100).toFixed(0)+'%</span>';if(pm>0)h+=' | <span style="color:#e8a94a">Portal muffle: '+pm+'</span>';if(!doorOpen&&path.ids.indexOf(2)>=0)h+=' | <span style="color:#e2c56a">Through closed door</span>'}
+else h='<span style="color:#e85d6f">No path found</span>';
+nfo.innerHTML=h}
+function gp(e){var r=cv.getBoundingClientRect(),t=e.touches?e.touches[0]:e;return{x:(t.clientX-r.left)/r.width*W,y:(t.clientY-r.top)/r.height*H}}
+cv.addEventListener('pointerdown',function(e){var p=gp(e);if(Math.hypot(p.x-src.x,p.y-src.y)<30)drag='s';else if(Math.hypot(p.x-lst.x,p.y-lst.y)<30)drag='l';if(drag){cv.setPointerCapture(e.pointerId);cv.style.cursor='grabbing'}});
+cv.addEventListener('pointermove',function(e){if(!drag)return;var p=gp(e);p.x=Math.max(12,Math.min(W-12,p.x));p.y=Math.max(12,Math.min(H-12,p.y));if(drag==='s'){src.x=p.x;src.y=p.y}else{lst.x=p.x;lst.y=p.y}draw()});
+cv.addEventListener('pointerup',function(){drag=null;cv.style.cursor='grab'});
+document.getElementById('demo-toggle').addEventListener('click',function(){doorOpen=!doorOpen;this.textContent=doorOpen?'Close Door':'Open Door';draw()});
+draw()})();
+</script>
+
+<p>The key thing to understand: <strong>the path always exists</strong> through the node graph. Closing a portal doesn't remove the path — it just makes it more expensive and muffled. Try dragging the listener into the dead zone nook at the bottom-right of Room B — that's what happens when a corner is missing its node.</p>
+
+<h2>Understanding Tags</h2>
+
+<p>Timbre uses two tags to understand your map's geometry.</p>
+
+<h3>Border Tag <code style="color:var(--text-2)">(default: "RoomBorderPart")</code></h3>
+<p>Tag your <strong>walls, floors, and ceilings</strong> — any part that physically separates spaces. Border-tagged parts do two things:</p>
+<ul>
+  <li><strong>Block node visibility.</strong> When Timbre raycasts from the listener (or a sound source) to find nearby propagation nodes, border parts stop the ray. If a wall is between you and a node, you can't "see" it, and no sound path can start or end there from your side.</li>
+  <li><strong>Block direct line of sight.</strong> When Timbre checks whether the source is directly visible to the listener, border parts block that check too — which is what triggers the diffraction system in the first place.</li>
+</ul>
+
+<h3>Portal Tag <code style="color:var(--text-2)">(default: "PortalPart")</code></h3>
+<p>Tag your <strong>doors, windows, and opening parts</strong>. Portal-tagged parts behave differently from borders in one critical way:</p>
+<ul>
+  <li><strong>They do NOT block node visibility.</strong> Timbre's sight rays pass right through portal parts as if they aren't there. This is what allows the node graph to always "see through" a doorway — even when there's a physical door there — so sound paths can route through closed doors.</li>
+  <li><strong>They DO block direct line of sight.</strong> A closed door still registers as an obstruction between the listener and the source, so the diffraction system kicks in and the sound gets properly routed and muffled through the graph.</li>
+</ul>
+
+<div class="callout spotlight">
+  <div class="callout-title"><span class="spark">&#x26A0;</span> Critical: ensure full node coverage</div>
+  <p style="margin-bottom:8px"><strong>Every position a player can reach must have unobstructed line-of-sight to at least one propagation node</strong> — meaning no border-tagged parts blocking the way. If a player is somewhere with every nearby node hidden behind walls, Timbre can't build any path and the player won't hear sounds at all.</p>
+  <p style="margin-bottom:0">After placing nodes, walk through your map and ask: "from here, can I see at least one node without a border-tagged wall in the way?" The <strong>Test Path</strong> mode in the editor is your best friend for catching dead spots.</p>
+</div>
+
+</div>
+
+<div class="page" id="page-scene-setup">
+<div class="section-label">Scene Editor</div>
+<h1>Essential Scene Setup</h1>
+
+
+<div class="callout info">
+  <div class="callout-title">Before you start</div>
+  <p style="margin-bottom:0">Make sure you've read <a href="#" onclick="goTo('how-it-works');return false"><strong>How It Works</strong></a> — it covers how propagation nodes, tags, and visibility work together, and why full node coverage is critical.</p>
+</div>
+
+
+<div class="step-header"><div class="step-num">1</div><h3>Set Up Openings</h3></div>
+<p>Before placing nodes, it's worth setting up parts at the openings into your rooms — doors, windows, archways, and so on. Even if an opening has no physical door or window, you'll probably want a part there. A fully transparent part works fine — it just needs to exist and be tagged.</p>
+
+<img src="Doors1.png" alt="Door parts placed at room openings" class="doc-img">
+<img src="Doors2.png" alt="Opening parts including outdoor archways" class="doc-img">
+
+<div class="callout info">
+  <div class="callout-title">Why bother with openings that have no door?</div>
+  <p style="margin-bottom:0">Even if you're not using <a href="#" onclick="goTo('reverb-rooms');return false">reverb rooms</a>, having parts at openings means you can support <a href="#" onclick="goTo('ambient-sounds');return false">ambient sounds</a> — wind, rain, and other outdoor audio that diffracts through portals when the listener is inside. Without an opening part, Timbre has no portal to route that sound through.</p>
+</div>
+
+<p>Opening parts also help with:</p>
+<ul>
+  <li>Letting the <strong>reverb system</strong> distinguish enclosed rooms from outdoor spaces, if you choose to use it.</li>
+  <li>Giving you control over <strong>room splitting</strong> — place opening parts anywhere you want to divide a large space into multiple rooms, so you can set different reverb presets in each area.</li>
+</ul>
+
+<div class="step-header"><div class="step-num">2</div><h3>Load / Unload Map</h3></div>
+<p>Select a <code>Model</code> in the Explorer that represents your map, then click <strong>Load from Selection</strong>. All node data, baked paths, and reverb room data will be stored as attributes on this model.</p>
 <img src="SelectMap.png" alt="Select and load a map model" class="doc-img">
 
-
-<!-- ── Step 2 ── -->
-<div class="step-header" id="step-2">
-  <div class="step-num">2</div>
-  <h3>Create Nodes <a class="anchor" href="#step-2">#</a></h3>
-</div>
-
-<p>Switch to the <strong>Nodes</strong> tab and start placing propagation nodes throughout your map. These nodes define the paths that sound can travel along.</p>
-
-<p>You have a few placement modes:</p>
+<div class="step-header"><div class="step-num">3</div><h3>Create Nodes</h3></div>
+<p>Switch to the <strong>Nodes</strong> tab and place propagation nodes throughout your map. Placement modes:</p>
 <ul>
-  <li><strong>Corner Nodes</strong> (default) — automatically places nodes along the vertical edges of walls. This is how you'll want to place most of your nodes.</li>
-  <li><strong>Free Place</strong> — uncheck "Corner Node" to place nodes freely in the world at any position.</li>
-  <li><strong>Portal Nodes</strong> — uncheck "Corner Node" and check "Portal" to create portal nodes for doors, windows, and other dynamic openings.</li>
+  <li><strong>Corner Nodes</strong> (default) — automatically places nodes along vertical wall edges.</li>
+  <li><strong>Free Place</strong> — uncheck "Corner Node" to place freely.</li>
+  <li><strong>Portal Nodes</strong> — uncheck "Corner Node" and check "Portal" for dynamic openings.</li>
 </ul>
-
-<img src="CreateNodes.png" alt="Creating nodes in the editor" class="doc-img">
+<img src="CreateNodes.png" alt="Creating nodes" class="doc-img">
 
 <div class="callout info">
   <div class="callout-title">Aligning node heights</div>
-  Want all your nodes at the same Y position? Switch to <strong>Displace</strong> mode. Hover over any node to read its height, set your target value, then click any other node to snap it to that height.
+  Switch to <strong>Displace</strong> mode. Hover over any node to read its height, set your target, then click other nodes to snap them.
 </div>
 
+<h3>Portal Nodes</h3>
+<p><strong>Portal Nodes</strong> can be opened or closed at runtime — doors, breakable windows, shutters, gates. When closed, they add a configurable <strong>cost</strong> and <strong>muffle penalty</strong> to paths.</p>
 
-<!-- ── Portal Nodes ── -->
-<h3 id="portal-nodes">Portal Nodes <a class="anchor" href="#portal-nodes">#</a></h3>
+<div class="step-header"><div class="step-num">4</div><h3>Connect &amp; Bake</h3></div>
+<p>Switch to <strong>Connect Nodes</strong> mode. Click and drag between nodes to create connections. You can also automatically generate connections here. When ready, click <strong>Bake All Connections</strong> to precompute optimal paths.</p>
 
-<p><strong>Portal Nodes</strong> are special nodes that can be opened or closed at runtime. Use them for anything the player can interact with to change sound propagation:</p>
+<div class="step-header"><div class="step-num">5</div><h3>Portal Costs</h3></div>
+<p>In <strong>Portals</strong> mode, configure each portal's closed behavior:</p>
+<img src="SetPortalCosts.png" alt="Setting portal costs" class="doc-img">
 <ul>
-  <li>Doors</li>
-  <li>Breakable windows</li>
-  <li>Shutters, gates, blast doors</li>
-</ul>
-<p>When a portal is closed, it adds a configurable <strong>navigation cost</strong> and <strong>muffle penalty</strong> to any sound path that passes through it. You'll configure these values in <a href="#step-4">Step 4</a>.</p>
-
-
-<!-- ── Step 3 ── -->
-<div class="step-header" id="step-3">
-  <div class="step-num">3</div>
-  <h3>Connect &amp; Bake <a class="anchor" href="#step-3">#</a></h3>
-</div>
-
-<p>Once all your nodes and portal nodes are placed, switch to <strong>Connect Nodes</strong> mode. Click and drag between nodes to create connections — these are the edges sound can travel along.</p>
-
-<p>When you're happy with the graph, click <strong>Bake All Connections</strong>. This precomputes optimal paths between every pair of nodes so the runtime can look them up instantly.</p>
-
-
-<!-- ── Step 4 ── -->
-<div class="step-header" id="step-4">
-  <div class="step-num">4</div>
-  <h3>Portal Costs <a class="anchor" href="#step-4">#</a></h3>
-</div>
-
-<p>Switch to <strong>Portals</strong> mode to configure each portal's behavior when closed. Set the cost and muffle values under the <strong>Portal Costs</strong> section of the panel, then click on a portal node to apply them.</p>
-
-<img src="SetPortalCosts.png" alt="Setting portal costs and muffle values" class="doc-img">
-
-<ul>
-  <li><strong>Portal Cost</strong> — the pathfinding penalty added when this portal is closed (in studs, 0–9999). Higher values make the pathfinder prefer routes that avoid the closed portal. A value of 50 means the closed portal is equivalent to adding 50 studs of extra distance.</li>
-  <li><strong>Portal Muffle</strong> — the EQ attenuation applied when sound passes through this closed portal (0–1). Higher values produce more muffling. A value of 0.5 is a moderate muffle suitable for a standard door.</li>
+  <li><strong>Portal Cost</strong> — pathfinding penalty when closed (in studs, 0–9999).</li>
+  <li><strong>Portal Muffle</strong> — EQ attenuation when sound passes through (0–1).</li>
 </ul>
 
 <div class="callout info">
   <div class="callout-title">Example — Window vs. Door</div>
-  <p style="margin-bottom:8px">Imagine a room with both a closed <strong>door</strong> and a thin closed <strong>window</strong>. You want sound to leak through the window more easily and with less muffling than through the heavy door:</p>
   <ul style="margin-bottom:0">
-    <li><strong>Window</strong> — Cost: <code>25</code>, Muffle: <code>0.25</code> (sound passes through more easily, stays clearer)</li>
-    <li><strong>Door</strong> — Cost: <code>50</code>, Muffle: <code>0.50</code> (higher penalty, more muffled)</li>
+    <li><strong>Window</strong> — Cost: <code>25</code>, Muffle: <code>0.25</code></li>
+    <li><strong>Door</strong> — Cost: <code>50</code>, Muffle: <code>0.50</code></li>
   </ul>
-  <p style="margin-bottom:0;margin-top:8px">With these values the pathfinder will prefer routing sound through the window when both are closed, and the sound that comes through it will be less muffled than what leaks through the door.</p>
+  <p style="margin-bottom:0;margin-top:6px">The pathfinder prefers the window when both are closed, and sound through it stays clearer.</p>
 </div>
 
-
-<!-- ── Portal Sizes ── -->
-<h3 id="portal-sizes">Portal Sizes <a class="anchor" href="#portal-sizes">#</a></h3>
-
-<p>By default, an occluded sound exits through the <em>center</em> of its portal node. From far away that's completely fine — but up close it can be jarring. Picture standing right next to an open doorway while a sound plays down the hallway to the <strong>left</strong>: the path exits at the door node, so you hear the sound coming from the middle of the doorway, dead ahead — not from the left, where it's actually coming from.</p>
-
-<p><strong>Portal Sizes</strong> solve this. Give a portal node the dimensions of its opening, and at runtime Timbre slides the emitter along the portal's plane toward where the sound is actually coming from, clamped to the opening's bounds. A sound down the hall to the left gets pushed to the left edge of the doorway; a sound from above a tall window plays from its top edge.</p>
-
-<img src="SizedPortals1.png" alt="Setting a portal size in the editor" class="doc-img">
-
-<p>To set up a portal size:</p>
+<h3>Portal Sizes</h3>
+<p>By default, an occluded sound exits through the <em>center</em> of its portal node. <strong>Portal Sizes</strong> fix this — give a portal the dimensions of its opening, and Timbre slides the emitter along the portal's plane toward where the sound is actually coming from.</p>
+<img src="SizedPortals1.png" alt="Setting portal sizes" class="doc-img">
 <ol>
-  <li>Switch to <strong>Portals</strong> mode and find the <strong>Portal Size</strong> section in the panel.</li>
-  <li>Enter the opening's <strong>Portal Width</strong> and <strong>Portal Height</strong> in studs — typically just the size of the doorway or window the node sits in.</li>
-  <li>Hover over a portal node — a preview box shows the bounds you're about to apply.</li>
-  <li>Click the portal node to apply. Every sized portal draws its bounds as a box gizmo so you can sanity-check the fit at a glance.</li>
+  <li>In <strong>Portals</strong> mode, enter <strong>Portal Width</strong> and <strong>Portal Height</strong> in studs.</li>
+  <li>Hover over a portal node to preview, click to apply.</li>
 </ol>
-
 <div class="callout info">
-  <div class="callout-title">Defaults &amp; rebaking</div>
-  <p style="margin-bottom:6px">Portal sizes default to <code>0 × 0</code>, which disables edge-sliding entirely — unsized portals behave exactly as before.</p>
-  <p style="margin-bottom:0">Sizes are purely a runtime positioning effect — changing them <strong>never requires a rebake</strong>.</p>
+  <div class="callout-title">Note</div>
+  <p style="margin-bottom:0">Sizes default to <code>0 × 0</code> (disabled).</p>
+</div>
+<img src="SizedPortals2.png" alt="Portal edge-sliding in game" class="doc-img">
+
+<div class="step-header"><div class="step-num">6</div><h3>Test Paths</h3></div>
+<p>In <strong>Test Path</strong> mode, click to place a source and listener. The editor visualizes the best path with cost/angle breakdowns. Click portals to toggle open/closed.</p>
+<img src="TestPaths.png" alt="Testing paths" class="doc-img">
 </div>
 
-<img src="SizedPortals2.png" alt="Portal edge-sliding working in game" class="doc-img">
-
-<p>And now you can see the emitter being pushed to the edge of the portal — the sound properly comes from the left, right where it should!</p>
-
-
-<!-- ── Step 5 ── -->
-<div class="step-header" id="step-5">
-  <div class="step-num">5</div>
-  <h3>Test Paths <a class="anchor" href="#step-5">#</a></h3>
-</div>
-
-<p>Switch to <strong>Test Path</strong> mode to verify your setup. Click to place a source and listener point, and the editor will visualize the best path between them, including cost and angle breakdowns.</p>
-
-<p>Click on any portal node to toggle its open/closed state and see how the path changes in real time. You can also click and drag either endpoint to reposition it and recompute a new path.</p>
-
-<img src="TestPaths.png" alt="Testing audio paths with portal toggling" class="doc-img">
-
-
-<!-- ── Step 6 ── -->
-<div class="step-header" id="step-6">
-  <div class="step-num">6</div>
-  <h3>Reverb Rooms <a class="anchor" href="#step-6">#</a></h3>
-</div>
-
-<img src="CreateRooms.png" alt="Generating reverb rooms" class="doc-img">
+<!-- ══════════════ REVERB ROOMS ══════════════ -->
+<div class="page" id="page-reverb-rooms">
+<div class="section-label">Scene Editor</div>
+<h1>Reverb Rooms</h1>
 
 <div class="callout info">
   <div class="callout-title">Reverb rooms are optional</div>
-  If you'd prefer to control reverb yourself or don't need spatial reverb at all, you can skip Steps 6–8 entirely. Timbre will still handle occlusion and diffraction without reverb data.
+  If you don't need spatial reverb, you can skip this section entirely. Timbre will still handle occlusion and diffraction without reverb data. If you use <a href="#" onclick="goTo('ambient-sounds');return false">ambient sounds</a>, you will need to either use reverb rooms <strong> or </strong> pass in your own callback to determine what is outside
 </div>
 
-<p>To generate reverb rooms, you first need to configure two tags that describe your map's geometry:</p>
+<p>The Room Editor lets you auto-generate reverb rooms from your map geometry, then configure reverb properties for each room.</p>
 
+<div class="step-header"><div class="step-num">1</div><h3>Generate Rooms</h3></div>
+<img src="CreateRooms.png" alt="Generating rooms" class="doc-img">
+
+<p>Configure two tags that describe your map's geometry:</p>
 <ul>
-  <li><strong>Border Tag</strong> — the parts that make up the boundaries of your map: walls, ceilings, floors, and anything else that defines where sound can and can't travel.</li>
-  <li><strong>Portal Tag</strong> — the parts that belong to portals (doors, windows). Tag the actual door/window parts with this.</li>
+  <li><strong>Border Tag</strong> — walls, ceilings, floors — everything that blocks sound.</li>
+  <li><strong>Portal Tag</strong> — door/window parts (the opening parts you set up in <a href="#" onclick="goTo('scene-setup');return false">Step 1</a>).</li>
 </ul>
 
 <div class="callout danger">
   <div class="callout-title">Tag rules</div>
-  <p style="margin-bottom:6px">A part must only have <strong>one</strong> of these tags — never both. A wall is a border, a door is a portal.</p>
-  <p style="margin-bottom:0">The border tag and portal tag must be <strong>different tag names</strong>.</p>
+  <p style="margin-bottom:0">A part must only have <strong>one</strong> tag — never both. The tag names must be different.</p>
 </div>
 
-<p>Once your tags are set, click <strong>Update Rooms</strong> to automatically generate room volumes from your geometry.</p>
+<p>Click <strong>Update Rooms</strong> to auto-generate room volumes. If rooms didn't generate correctly, use <strong>Register from Selection</strong> with a model containing submodels of room volumes.</p>
 
-<div class="callout info">
-  <div class="callout-title">Room generation didn't work?</div>
-  Automatic room detection relies on enclosed volumes formed by tagged border parts. If for some reason rooms didn't generate correctly, you can use <strong>Register from Selection</strong>. Select a model whose children are submodels — each submodel should contain parts that define a room's volume — and Timbre will register them as rooms.
-</div>
+<h3>Manual Room Splitting</h3>
+<p>To split large spaces into multiple rooms, create temporary blocker parts tagged with your <strong>border tag</strong>, run <strong>Update Rooms</strong>, then delete the blockers — the room data is already baked.</p>
+<img src="RoomBorder.png" alt="Temporary border parts" class="doc-img">
 
-
-<!-- ── Manual Room Splitting ── -->
-<h3 id="manual-room-splitting">Manual Room Splitting <a class="anchor" href="#manual-room-splitting">#</a></h3>
-
-<p>Sometimes you might want to split a large open space into multiple rooms, or create room boundaries in areas that don't have physical doors or walls — for example, separating an outdoor courtyard from a covered patio, or dividing an L-shaped hallway so each leg gets its own reverb.</p>
-
-<div class="callout info">
-  <div class="callout-title">Temporary border parts</div>
-  <p style="margin-bottom:8px">To do this, just create blocker parts wherever you need a room boundary, tag them with your <strong>border tag</strong>, and click <strong>Update Rooms</strong>.</p>
-  <p style="margin-bottom:0">Once your rooms are generated and configured, you can safely delete the blocker parts in-game — the room data is already baked. They only need to exist at authoring time.</p>
-</div>
-
-<img src="RoomBorder.png" alt="Temporary border parts used to split rooms" class="doc-img">
-
-
-<!-- ── Step 7 ── -->
-<div class="step-header" id="step-7">
-  <div class="step-num">7</div>
-  <h3>Configure Rooms <a class="anchor" href="#step-7">#</a></h3>
-</div>
-
-<img src="ConfigRooms.png" alt="Room configuration with minimap" class="doc-img">
-
-<p>If rooms were generated successfully, the <strong>Room Config</strong> tab shows a minimap of your map with color-coded rooms. The room your camera is currently inside is displayed at the top.</p>
-
-<div class="callout warn">
-  <div class="callout-title">Multi-floor maps</div>
-  If your map has multiple floors, the room system still works correctly. Just note that the minimap preview is a top-down view and will overlap floors visually for now.
-</div>
-
-<p>Each room can be set to one of three reverb modes:</p>
+<div class="step-header"><div class="step-num">2</div><h3>Configure Rooms</h3></div>
+<img src="ConfigRooms.png" alt="Room configuration" class="doc-img">
+<p>Each room supports three reverb modes:</p>
 <ul>
-  <li><strong>None</strong> — no reverb applied in this room.</li>
-  <li><strong>Preset</strong> — a single reverb preset is applied uniformly throughout the room. Good for simple spaces like hallways or small rooms.</li>
-  <li><strong>Blend Nodes</strong> — multiple reverb presets are placed at specific positions within the room. The runtime blends between the nearest visible nodes using inverse-distance weighting. This is ideal for large or complex spaces where reverb should vary throughout the space. But if you're splitting open rooms, it's probably unnecessary.</li>
+  <li><strong>None</strong> — no reverb.</li>
+  <li><strong>Preset</strong> — a single reverb preset applied uniformly.</li>
+  <li><strong>Blend Nodes</strong> — multiple presets blended by inverse-distance weighting.</li>
 </ul>
 
-<p>In <strong>Preset</strong> mode, you simply pick a preset from the dropdown and it applies to the entire room.</p>
-
-<p>In <strong>Blend Nodes</strong> mode, each node within the room gets its own preset assignment. The runtime automatically interpolates between the nearest nodes based on the listener's position, creating smooth spatial transitions.</p>
-
-
-<!-- ── Presets ── -->
-<h3 id="presets">Presets <a class="anchor" href="#presets">#</a></h3>
-
-<p>The <strong>Presets</strong> tab is where you create and edit reverb presets. Each preset defines a full set of <code>AudioReverb</code> properties (decay time, wet level, diffusion, etc.) plus optional room tone properties for EQ coloring.</p>
-
-<img src="CreatePresets.png" alt="Creating reverb presets" class="doc-img doc-img-sm">
-
-<img src="CreatePresets2.png" alt="Preset properties editor" class="doc-img doc-img-sm">
-
-<h3>Room Tone Settings</h3>
-<p>Each preset can also have <strong>Room Tone</strong> properties that control how the room colors the sound with EQ. These work alongside the reverb properties to make each space feel distinct.</p>
+<div class="step-header"><div class="step-num">3</div><h3>Presets</h3></div>
+<p>The <strong>Presets</strong> tab is where you create reverb presets — full <code>AudioReverb</code> properties plus optional Room Tone settings for EQ coloring.</p>
+<img src="CreatePresets.png" alt="Creating presets" class="doc-img doc-img-sm">
 
 <div class="callout info">
   <div class="callout-title">Room Tone Properties</div>
   <ul style="margin-bottom:0">
-    <li><strong>BrightnessLow</strong> — how much the room boosts or cuts low frequencies. Values above 1 add bass warmth, below 1 thins it out.</li>
-    <li><strong>BrightnessHigh</strong> — how much the room boosts or cuts high frequencies. Values above 1 make the room sound brighter, below 1 makes it duller.</li>
-    <li><strong>MeanFreePath</strong> — the average distance (in studs) sound travels before hitting a surface. Small rooms have low values (tight reflections), large open spaces have high values (spacious feel).</li>
-    <li><strong>Enclosure</strong> — how "closed in" the space feels, from 0 (open air) to 1 (fully enclosed). Higher values make the room tone EQ effect stronger.</li>
-    <li><strong>Strength</strong> — an overall multiplier on the room tone effect. At 1 (default) the full effect is applied. Lower values dial it back if the coloring is too intense.</li>
+    <li><strong>BrightnessLow / BrightnessHigh</strong> — bass/treble boost (above 1) or cut (below 1).</li>
+    <li><strong>MeanFreePath</strong> — avg. distance before a reflection (studs). Small rooms = low.</li>
+    <li><strong>Enclosure</strong> — how enclosed the space feels (0–1). Higher = stronger EQ effect.</li>
+    <li><strong>Strength</strong> — overall room tone multiplier (default 1).</li>
   </ul>
 </div>
 
-<p>Presets you create here will appear in the room and blend node dropdowns. They are stored inside a <code>TimbreReverbPresets</code> tagged folder that the runtime reads at startup.</p>
-
-
-<!-- ── Step 8 ── -->
-<div class="step-header" id="step-8">
-  <div class="step-num">8</div>
-  <h3>Preview Sounds <a class="anchor" href="#step-8">#</a></h3>
+<div class="step-header"><div class="step-num">4</div><h3>Preview Sounds</h3></div>
+<p>The <strong>Preview</strong> tab lets you hear reverb rooms in Studio. Paste an audio asset ID, hit play, and check <strong>Live Preview</strong> to update as you move.</p>
+<img src="Preview.png" alt="Sound preview" class="doc-img doc-img-sm">
 </div>
 
-<p>The <strong>Preview</strong> tab lets you hear what your reverb rooms sound like without leaving Studio. Paste an audio asset ID, hit play, and the preview emitter will use whatever reverb preset is configured for the room at its current position.</p>
-
-<img src="Preview.png" alt="Sound preview panel" class="doc-img doc-img-sm">
-
-<div class="callout info">
-  <div class="callout-title">Live preview</div>
-  Check <strong>Live Preview</strong> to have the preview continuously update as you move your camera through different rooms.
-</div>
-
-
-<!-- ═══════════════════════════════════════════════════════════════ -->
-<!--                       TIMBRE RUNTIME                          -->
-<!-- ═══════════════════════════════════════════════════════════════ -->
-
+<!-- ══════════════ RUNTIME SETUP ══════════════ -->
+<div class="page" id="page-runtime-setup">
 <div class="section-label">Runtime</div>
-<h2 id="runtime">Timbre Runtime <a class="anchor" href="#runtime">#</a></h2>
-
-<p>Once your scene is authored in the editor, getting Timbre running in-game is straightforward. Require the module and follow the steps below.</p>
-
+<h1>Runtime Setup</h1>
+<p>Require the module and follow these steps to get Timbre running in-game.</p>
 <pre><code><span class="kw">local</span> Timbre = <span class="fn">require</span>(path.to.TimbrePackage.Timbre)</code></pre>
 
-
-<!-- ── RT Step 1 ── -->
-<div class="step-header" id="rt-step-1">
-  <div class="step-num">1</div>
-  <h3>Set Tags <a class="anchor" href="#rt-step-1">#</a></h3>
-</div>
-
-<p>Tell Timbre which tagged parts make up your world geometry so it can build its raycast model.</p>
-
-<div class="api-sig"><code><span class="kw">function</span> Timbre:<span class="fn">SetOcclusionTags</span>(
-    occlusionPartTag: <span class="ty">string</span>,
-    portalPartTag: <span class="ty">string</span>,
-    dynamicPartTag: <span class="ty">string?</span>
-)</code></div>
-
-<div class="callout info">
-  <div class="callout-title">Same tags as the editor</div>
-  These should be the same tags you used when setting up your scene in the editor — typically <code>"RoomBorderPart"</code> for borders and <code>"PortalPart"</code> for portals.
-</div>
-
+<h2>1 — Set Tags</h2>
+<p>Tell Timbre which tagged parts make up your world geometry.</p>
+<div class="api-sig"><code><span class="kw">function</span> Timbre:<span class="fn">SetOcclusionTags</span>(occlusionPartTag: <span class="ty">string</span>, portalPartTag: <span class="ty">string</span>, dynamicPartTag: <span class="ty">string?</span>)</code></div>
 <pre><code>Timbre:<span class="fn">SetOcclusionTags</span>(<span class="str">"RoomBorderPart"</span>, <span class="str">"PortalPart"</span>, <span class="str">"PortalPart"</span>)</code></pre>
-
 <table class="param-table">
   <tr><th>Parameter</th><th>Type</th><th>Description</th></tr>
-  <tr>
-    <td>occlusionPartTag</td>
-    <td>string</td>
-    <td>Tag for the static parts that block sound — walls, floors, ceilings, and anything that defines the boundaries of your map.</td>
-  </tr>
-  <tr>
-    <td>portalPartTag</td>
-    <td>string</td>
-    <td>Tag for portal parts — doors, windows, and other openings that can be toggled open or closed at runtime. These are included in the occlusion filter but treated specially by the sight system.</td>
-  </tr>
-  <tr>
-    <td>dynamicPartTag</td>
-    <td>string?</td>
-    <td>Optional tag for parts that move at runtime (e.g. a sliding door, a rotating wall). Timbre tracks CFrame and CanCollide changes on these parts each frame and updates its internal raycast WorldModel accordingly. You can just leave this as <code>"PortalPart"</code> for now if your doors open and close physically.</td>
-  </tr>
+  <tr><td>occlusionPartTag</td><td>string</td><td>Tag for static parts that block sound — walls, floors, ceilings.</td></tr>
+  <tr><td>portalPartTag</td><td>string</td><td>Tag for portal parts — doors, windows. Included in occlusion filter but treated specially.</td></tr>
+  <tr><td>dynamicPartTag</td><td>string?</td><td>Optional tag for parts that move at runtime (sliding doors). Timbre tracks CFrame/CanCollide changes each frame.</td></tr>
 </table>
 
-
-<!-- ── RT Step 2 ── -->
-<div class="step-header" id="rt-step-2">
-  <div class="step-num">2</div>
-  <h3>Start <a class="anchor" href="#rt-step-2">#</a></h3>
-</div>
-
-<p>Start the Timbre runtime. This creates the instance pool (if enabled), loads any <a href="#rt-sound-profiles">Sound Profiles</a> and Concurrency Groups from your game, and begins the per-frame update loops for occlusion, diffraction, and reverb.</p>
-
+<h2>2 — Start</h2>
+<p>Start the runtime. Creates the instance pool, loads Sound Profiles and Concurrency Groups, and begins per-frame update loops.</p>
 <pre><code>Timbre:<span class="fn">Start</span>()</code></pre>
+<div class="callout warn"><div class="callout-title">Call this once</div>Call <code>Timbre:Start()</code> after setting tags, before attaching sounds.</div>
 
-<div class="callout warn">
-  <div class="callout-title">Call this once</div>
-  Call <code>Timbre:Start()</code> after setting your tags, but before attaching any sounds. It only needs to be called once.
-</div>
-
-
-<!-- ── RT Step 3 ── -->
-<div class="step-header" id="rt-step-3">
-  <div class="step-num">3</div>
-  <h3>Load / Unload Map <a class="anchor" href="#rt-step-3">#</a></h3>
-</div>
-
-<p>Load the same map model you authored in the editor. Timbre will read the baked propagation data and reverb room data from its attributes. When you're done — or switching to a different map — call <code>UnloadMap</code>.</p>
-
+<h2>3 — Load Map</h2>
+<p>Load the map model you authored in the editor. Timbre reads baked propagation data and reverb room data from its attributes.</p>
 <pre><code><span class="kw">local</span> LoadedMap = Timbre:<span class="fn">LoadMap</span>(workspace:<span class="fn">WaitForChild</span>(<span class="str">"Map"</span>))
 
-<span class="cm">-- Later, when switching maps or cleaning up:</span>
+<span class="cm">-- Later, when switching maps:</span>
 Timbre:<span class="fn">UnloadMap</span>()</code></pre>
 
-
-<!-- ── RT Step 4 ── -->
-<div class="step-header" id="rt-step-4">
-  <div class="step-num">4</div>
-  <h3>Portal Events <a class="anchor" href="#rt-step-4">#</a></h3>
-</div>
-
-<p>Toggle a portal node's open/closed state at runtime. Timbre finds the closest portal node to the given position and updates it.</p>
-
+<h2>4 — Portal Events</h2>
+<p>Toggle a portal node's state at runtime. Timbre finds the closest portal node to the given position and updates it.</p>
 <div class="api-sig"><code><span class="kw">function</span> Timbre:<span class="fn">SetPortalNodeState</span>(position: <span class="ty">Vector3</span>, open: <span class="ty">boolean</span>)</code></div>
-
 <div class="callout info">
   <div class="callout-title">ObserveTag for easy wiring</div>
-  <p style="margin-bottom:8px"><code>LoadedMap:ObserveTag()</code> watches for tagged instances within your map and cleans up automatically when the map is unloaded. This is the recommended way to wire up portal events:</p>
+  <p style="margin-bottom:6px"><code>LoadedMap:ObserveTag()</code> watches for tagged instances within your map and cleans up automatically when the map is unloaded:</p>
 <pre style="margin-bottom:0"><code>LoadedMap:<span class="fn">ObserveTag</span>(<span class="str">"Door"</span>, <span class="kw">function</span>(newDoor)
-    <span class="kw">local</span> doorOpenValue: BoolValue = newDoor:<span class="fn">WaitForChild</span>(<span class="str">"Open"</span>)
-    <span class="kw">local</span> doorPosition: Vector3 = newDoor:<span class="fn">GetPivot</span>().Position
+    <span class="kw">local</span> doorOpen = newDoor:<span class="fn">WaitForChild</span>(<span class="str">"Open"</span>)
+    <span class="kw">local</span> doorPos = newDoor:<span class="fn">GetPivot</span>().Position
 
-    <span class="cm">-- Set initial portal state</span>
-    Timbre:<span class="fn">SetPortalNodeState</span>(doorPosition, doorOpenValue.Value)
+    Timbre:<span class="fn">SetPortalNodeState</span>(doorPos, doorOpen.Value)
 
-    <span class="cm">-- Update when the door opens/closes</span>
-    <span class="kw">local</span> conn = doorOpenValue:<span class="fn">GetPropertyChangedSignal</span>(<span class="str">"Value"</span>):<span class="fn">Connect</span>(<span class="kw">function</span>()
-        Timbre:<span class="fn">SetPortalNodeState</span>(doorPosition, doorOpenValue.Value)
+    <span class="kw">local</span> conn = doorOpen:<span class="fn">GetPropertyChangedSignal</span>(<span class="str">"Value"</span>):<span class="fn">Connect</span>(<span class="kw">function</span>()
+        Timbre:<span class="fn">SetPortalNodeState</span>(doorPos, doorOpen.Value)
     <span class="kw">end</span>)
 
-    <span class="cm">-- Cleanup if the door is removed</span>
     <span class="kw">return function</span>() conn:<span class="fn">Disconnect</span>() <span class="kw">end</span>
 <span class="kw">end</span>)</code></pre>
 </div>
 
-
-<!-- ── RT Step 5 ── -->
-<div class="step-header" id="rt-step-5">
-  <div class="step-num">5</div>
-  <h3>Playing Audio <a class="anchor" href="#rt-step-5">#</a></h3>
+<h2>5 — Set Listener</h2>
+<p>Override the default camera listener with a custom part or attachment.</p>
+<div class="api-sig"><code><span class="kw">function</span> Timbre:<span class="fn">SetListener</span>(listener: (<span class="ty">Attachment</span> | <span class="ty">PVInstance</span>)?)</code></div>
+<p>Pass <code>nil</code> to revert to the camera. If the listener is destroyed, Timbre auto-reverts.</p>
+<pre><code>Timbre:<span class="fn">SetListener</span>(character.Head) <span class="cm">-- Use head as listener</span>
+Timbre:<span class="fn">SetListener</span>(<span class="kw">nil</span>)             <span class="cm">-- Revert to camera</span></code></pre>
 </div>
 
-<p>Timbre does not use Roblox's legacy <code>Sound</code> objects. Instead, it works with <code>AudioPlayer</code> instances from the new audio API. When you attach an AudioPlayer to Timbre, it automatically wires up the entire audio graph for you — emitters, faders, EQ, reverb, and distance attenuation — so you just focus on playing and stopping sounds.</p>
+<!-- ══════════════ PLAYING AUDIO ══════════════ -->
+<div class="page" id="page-playing-audio">
+<div class="section-label">Runtime</div>
+<h1>Playing Audio</h1>
+<p>Timbre works with <code>AudioPlayer</code> instances from Roblox's audio API — not the legacy <code>Sound</code> object. Create a TimbrePlayer, Attach it to speaker(s), and Timbre handles the rest.</p>
 
+<h2>Dual-Channel Architecture</h2>
 <p>Each attached sound gets <strong>two channels</strong>:</p>
 <ul>
-  <li><strong>Direct Channel</strong> — an emitter at the source position. When the sound is occluded, this channel can apply direct-occlusion muffling based on diffraction data while keeping the emitter at the true source location. Useful for sounds close to the listener where you want them muffled but not repositioned.</li>
-  <li><strong>Diffraction Channel</strong> — an emitter at a <em>virtual position</em> computed from the best propagation path around obstacles. The sound appears to come from the nearest visible exit point of the path. This channel handles the repositioned, muffled version of the sound when occluded.</li>
+  <li><strong>Direct Channel (optional per sound)</strong> — emitter at the source position. When occluded, applies "through the wall" muffling while keeping the emitter at the true location.</li>
+  <li><strong>Diffraction Channel</strong> — emitter at a <em>virtual position</em> computed from the best propagation path. The sound appears to come from the nearest visible exit point around obstacles.</li>
 </ul>
+<p>If you don't want repositioned audio, but just want the environment to muffle sounds, you can simply turn it off in the <a href="#" onclick="goTo('global-settings');return false">settings</a>.</p>
 
-<div class="callout warn">
-  <div class="callout-title">Reuse AudioPlayers when possible</div>
-  <p style="margin-bottom:8px">Creating and destroying AudioPlayers every time a sound plays is wasteful and might cause issues if done frequently enough. To be safe, whenever possible you should create AudioPlayers ahead of time and reuse them.</p>
-  <p style="margin-bottom:0">For example, for character footsteps instead of spawning a new player for every footstep cue, you could create an AudioPlayer parented to each foot, attach it to Timbre, then on each cue:</p>
-  <ul style="margin-bottom:0;margin-top:6px">
-    <li>Set the <code>.Asset</code> property to the appropriate material sound</li>
-    <li>Call <code>:Play()</code></li>
-  </ul>
-</div>
+<h2>CreatePlayer</h2>
+<p>Create a <code>TimbrePlayer</code> wrapping an AudioPlayer. Multiple speakers can be attached to the same player — all share the same audio source and play in sync.</p>
+<div class="api-sig"><code><span class="kw">function</span> Timbre:<span class="fn">CreatePlayer</span>(audioPlayer: <span class="ty">AudioPlayer</span>): <span class="ty">TimbrePlayer</span></code></div>
+<p>The TimbrePlayer is automatically destroyed when the AudioPlayer is destroyed.</p>
+<pre><code><span class="kw">local</span> audioPlayer = Instance.new(<span class="str">"AudioPlayer"</span>)
+audioPlayer.Parent = workspace
 
+<span class="kw">local</span> player = Timbre:<span class="fn">CreatePlayer</span>(audioPlayer)</code></pre>
 
-<!-- ── Sound Profiles ── -->
-<h3 id="rt-sound-profiles">Sound Profiles <a class="anchor" href="#rt-sound-profiles">#</a></h3>
-
-<p>Sound Profiles let you define reusable parameter presets for groups of sounds. Create a folder named <code>TimbreSoundProfiles</code> in your game, then add a <code>SoundProfiles</code> subfolder containing named profile folders. Each profile folder holds <code>ValueBase</code> children whose names and values match the parameter keys.</p>
-
-<img src="SoundProfiles.png" alt="Sound Profiles folder structure" class="doc-img doc-img-sm">
-
-<p>Parameters are resolved in a three-tier chain: <strong>explicit params</strong> → <strong>Sound Profile</strong> → <strong>built-in defaults</strong>. If you pass <code>MinDistance = 10</code> in the params table, that wins. If you don't, Timbre checks whether the sound has a named <code>Profile</code> and looks up the value there. If neither provides it, the built-in default is used.</p>
-
-<div class="callout info">
-  <div class="callout-title">Concurrency Groups</div>
-  <p style="margin-bottom:0">You can limit how many sounds of a given type play at once using <strong>Concurrency Groups</strong>. Add a <code>ConcurrencyGroups</code> subfolder to your <code>TimbreSoundProfiles</code> folder, then create named group folders each containing a <code>MaxConcurrent</code> IntValue. Sounds with a matching <code>ConcurrencyGroup</code> param are automatically silenced (faded out) when the group limit is exceeded — closest sounds to the listener are kept.</p>
-</div>
-
-
-<!-- ── Attach ── -->
-<h3 id="rt-attach">Timbre:Attach() <a class="anchor" href="#rt-attach">#</a></h3>
-
-<p>Attach an AudioPlayer to the Timbre runtime. Timbre will manage occlusion, diffraction, and reverb for this sound automatically.</p>
-
-<div class="callout info">
-  <div class="callout-title">Automatic cleanup</div>
-  The sound is automatically cleaned up when the AudioPlayer is destroyed. The returned <code>SoundObject</code> is an internal handle — you typically don't need to interact with it directly.
-</div>
-
-<div class="api-sig"><code><span class="kw">function</span> Timbre:<span class="fn">Attach</span>(
-    audioPlayer: <span class="ty">AudioPlayer</span>,
-    params: {[<span class="ty">string</span>]: <span class="ty">any</span>}?,
-    category: <span class="ty">string?</span>,
-    identifier: <span class="ty">string?</span>
-): <span class="ty">SoundObject</span></code></div>
-
+<h2>Attach</h2>
+<p>Attach a speaker to a TimbrePlayer. The speaker's position determines where the sound is heard from.</p>
+<div class="api-sig"><code><span class="kw">function</span> TimbrePlayer:<span class="fn">Attach</span>(speaker: <span class="ty">Attachment</span> | <span class="ty">BasePart</span>, params: {[<span class="ty">string</span>]: <span class="ty">any</span>}?, category: <span class="ty">string?</span>, identifier: <span class="ty">string?</span>): <span class="ty">SoundObject</span></code></div>
 <table class="param-table">
   <tr><th>Parameter</th><th>Type</th><th>Description</th></tr>
-  <tr>
-    <td>audioPlayer</td>
-    <td>AudioPlayer</td>
-    <td>The AudioPlayer instance to attach. Must be parented to a BasePart or Attachment that defines its world position.</td>
-  </tr>
-  <tr>
-    <td>params</td>
-    <td>{[string]: any}?</td>
-    <td>Optional table of sound parameters. Values here override matching <strong>Sound Profile</strong> defaults, which in turn override the built-in defaults. See below for available keys.</td>
-  </tr>
-  <tr>
-    <td>category</td>
-    <td>string?</td>
-    <td>Groups the sound in the debug explorer (e.g. <code>"SFX"</code>, <code>"Ambient"</code>, <code>"Music"</code>).</td>
-  </tr>
-  <tr>
-    <td>identifier</td>
-    <td>string?</td>
-    <td>Display name for this sound in the debug explorer (e.g. <code>"Footstep"</code>, <code>"Gunshot"</code>).</td>
-  </tr>
+  <tr><td>speaker</td><td>Attachment | BasePart</td><td>The part or attachment that determines the sound's world position.</td></tr>
+  <tr><td>params</td><td>{[string]: any}?</td><td>Optional <a href="#" onclick="goTo('sound-params');return false">sound parameters</a>.</td></tr>
+  <tr><td>category</td><td>string?</td><td>Groups the sound in the debug explorer.</td></tr>
+  <tr><td>identifier</td><td>string?</td><td>Display name in the debug explorer.</td></tr>
 </table>
-
-<p>Reference a profile by name in the <code>params</code> table, and any other sound settings you want:</p>
-
-<pre><code><span class="kw">local</span> soundObject = Timbre:<span class="fn">Attach</span>(audioPlayer, {
+<pre><code><span class="kw">local</span> soundObj = player:<span class="fn">Attach</span>(speakerPart, {
     MinDistance = <span class="num">10</span>,
     MaxDistance = <span class="num">80</span>,
-    Volume = <span class="num">1</span>,
-    Pitch = <span class="num">1</span>,
     Profile = <span class="str">"Footsteps"</span>,
 }, <span class="str">"CharacterSounds"</span>, <span class="str">"Footstep"</span>)</code></pre>
+<div class="callout info"><div class="callout-title">Automatic cleanup</div>The sound is automatically cleaned up when the speaker is destroyed.</div>
+<div class="callout warn">
+  <div class="callout-title">Reuse AudioPlayers when possible</div>
+  <p style="margin-bottom:0">Creating and destroying AudioPlayers frequently is wasteful and might lead to strange behavior. Create them ahead of time and reuse them — e.g. for footsteps, create one AudioPlayer per foot, attach once, then swap <code>.Asset</code> and call <code>:Play()</code> on each cue.</p>
+</div>
 
+<h2>Detach</h2>
+<div class="api-sig"><code><span class="kw">function</span> TimbrePlayer:<span class="fn">Detach</span>(soundObj: <span class="ty">SoundObject</span>, fadeOutDuration: <span class="ty">number?</span>, onComplete: (() <span class="op">-></span> ())?)</code></div>
+<div class="api-sig"><code><span class="kw">function</span> TimbrePlayer:<span class="fn">DetachAll</span>(fadeOutDuration: <span class="ty">number?</span>, onComplete: (() <span class="op">-></span> ())?)</code></div>
+<pre><code><span class="cm">-- Immediate detach</span>
+player:<span class="fn">Detach</span>(soundObj)
 
-<!-- ── Detach ── -->
-<h3 id="rt-detach">Timbre:Detach() <a class="anchor" href="#rt-detach">#</a></h3>
+<span class="cm">-- Fade out over 1 second</span>
+player:<span class="fn">Detach</span>(soundObj, <span class="num">1</span>, <span class="kw">function</span>()
+    <span class="fn">print</span>(<span class="str">"Fade complete"</span>)
+<span class="kw">end</span>)
 
-<p>Detach an AudioPlayer from the Timbre runtime. Optionally fade out before fully disconnecting.</p>
+<span class="cm">-- Detach everything</span>
+player:<span class="fn">DetachAll</span>()</code></pre>
 
-<div class="api-sig"><code><span class="kw">function</span> Timbre:<span class="fn">Detach</span>(
-    audioPlayer: <span class="ty">AudioPlayer</span>,
-    fadeOutDuration: <span class="ty">number?</span>,
-    onComplete: (() <span class="op">-></span> ())?
-)</code></div>
+<h2>Sound Profiles</h2>
+<p>Sound Profiles define reusable parameter presets. Create a folder tagged <code>#TimbreSoundProfiles</code> in your game with a <code>SoundProfiles</code> subfolder containing named profile folders. Each profile folder holds <code>ValueBase</code> children matching parameter keys.</p>
+<img src="SoundProfiles.png" alt="Sound Profiles" class="doc-img doc-img-sm">
+<p>Parameters resolve in a three-tier chain: <strong>explicit params</strong> → <strong>Sound Profile</strong> → <strong>built-in defaults</strong>.</p>
+<div class="callout info">
+  <div class="callout-title">Concurrency Groups</div>
+  <p style="margin-bottom:0">Add a <code>ConcurrencyGroups</code> subfolder with named group folders each containing a <code>MaxConcurrent</code> IntValue. Sounds with a matching <code>ConcurrencyGroup</code> param are auto-silenced when the limit is exceeded — closest sounds to the listener are kept.</p>
+</div>
+</div>
 
+<!-- ══════════════ VOLUMETRIC AUDIO ══════════════ -->
+<div class="page" id="page-volumetric-audio">
+<div class="section-label">Runtime</div>
+<h1>Volumetric Audio</h1>
+<p>Standard <code>Attach</code> treats a sound as a single point in space. <strong>AttachVolumetric</strong> makes a sound emit from the entire surface of a BasePart — ideal for large sound sources like waterfalls, bonfires, machinery, or ambient hum from a generator.</p>
+<div class="callout warn">
+  <div class="callout-title">Use sparingly!</div>
+  <p style="margin-bottom:0">Volumetric audio can be a bit more expensive, which shouldn't slow down your games as everything is frame-budgeted, but might lead to delayed audio updates. Be sure to test everything first to make sure it's running nicely.</p>
+</div>
+
+<h2>How It Works</h2>
+<p>Timbre samples the speaker BasePart's surface and finds the <strong>nearest point</strong> on that surface to the listener. The direct channel emitter tracks this point, so the sound always appears to come from the closest edge of the object rather than its center. Occlusion checks are amortized across frames — each frame, a budget of raycasts tests surface points for visibility, with early exit as soon as a visible point is found.</p>
+<p>When the listener is <strong>inside</strong> the volume, the sound plays at full volume with no distance attenuation — you're surrounded by the source.</p>
+
+<h2>AttachVolumetric</h2>
+<div class="api-sig"><code><span class="kw">function</span> TimbrePlayer:<span class="fn">AttachVolumetric</span>(speaker: <span class="ty">BasePart</span>, volumetricParams: { shape: <span class="ty">string?</span>, spacing: <span class="ty">number?</span> }?, params: {[<span class="ty">string</span>]: <span class="ty">any</span>}?, category: <span class="ty">string?</span>, identifier: <span class="ty">string?</span>): <span class="ty">SoundObject</span></code></div>
 <table class="param-table">
   <tr><th>Parameter</th><th>Type</th><th>Description</th></tr>
-  <tr>
-    <td>audioPlayer</td>
-    <td>AudioPlayer</td>
-    <td>The AudioPlayer to detach. Must have been previously attached via <code>Timbre:Attach()</code>.</td>
-  </tr>
-  <tr>
-    <td>fadeOutDuration</td>
-    <td>number?</td>
-    <td>If provided, the sound fades out over this many seconds before being fully cleaned up. If omitted, cleanup is immediate.</td>
-  </tr>
-  <tr>
-    <td>onComplete</td>
-    <td>(() -> ())?</td>
-    <td>Callback fired after the fade-out completes and the sound is fully cleaned up. Safe to destroy the AudioPlayer here.</td>
-  </tr>
+  <tr><td>speaker</td><td>BasePart</td><td>The part that defines both position and emission volume.</td></tr>
+  <tr><td>volumetricParams</td><td>table?</td><td>Shape and spacing configuration.</td></tr>
+  <tr><td>params</td><td>{[string]: any}?</td><td>Optional <a href="#" onclick="goTo('sound-params');return false">sound parameters</a>.</td></tr>
+  <tr><td>category</td><td>string?</td><td>Debug explorer category.</td></tr>
+  <tr><td>identifier</td><td>string?</td><td>Debug explorer display name.</td></tr>
+</table>
+<h3>Volumetric Params</h3>
+<table class="settings-table">
+  <tr><th>Key</th><th>Default</th><th>Description</th></tr>
+  <tr><td>shape</td><td>auto</td><td><code>"Box"</code>, <code>"Sphere"</code>, or <code>"Cylinder"</code>. Auto-detects from <code>Part.Shape</code> if omitted.</td></tr>
+  <tr><td>spacing</td><td>auto</td><td>Distance between surface sample points in studs. Auto-calculated from part size if omitted.</td></tr>
+</table>
+<h3>Shapes</h3>
+<ul>
+  <li><strong>Box</strong></li>
+  <li><strong>Sphere</strong></li>
+  <li><strong>Cylinder</strong></li>
+</ul>
+<h3>Example</h3>
+<pre><code><span class="kw">local</span> waterfall = workspace.Waterfall
+
+<span class="kw">local</span> player = Timbre:<span class="fn">CreatePlayer</span>(audioPlayer)
+player:<span class="fn">AttachVolumetric</span>(waterfall, {
+    shape = <span class="str">"Box"</span>,
+    spacing = <span class="num">8</span>,
+}, {
+    MinDistance = <span class="num">20</span>,
+    MaxDistance = <span class="num">200</span>,
+    SoundAngleSensitivity = <span class="num">0.3</span>,
+}, <span class="str">"Environment"</span>, <span class="str">"Waterfall"</span>)</code></pre>
+<div class="callout info">
+  <div class="callout-title">Performance</div>
+  <p style="margin-bottom:0">Volumetric occlusion is budgeted per-frame by <code>VOLUMETRIC_OCCLUSION_MAX_RAYCASTS</code> (default 64). Visible volumes early-exit immediately. Only fully-occluded volumes use the full budget, spread across multiple frames.</p>
+</div>
+</div>
+
+<!-- ══════════════ AMBIENT SOUNDS ══════════════ -->
+<div class="page" id="page-ambient-sounds">
+<div class="section-label">Runtime</div>
+<h1>Ambient Sounds</h1>
+<p>Ambient sounds represent environmental audio that's omnipresent when outdoors — wind, rain, distant traffic, birdsong. When the listener is <strong>outside</strong>, the sound plays at full volume right in front of the camera. When the listener moves <strong>inside</strong>, the sound diffracts through the nearest outside-facing portal, getting muffled and attenuated just like any other sound traveling through the propagation graph.</p>
+
+<h2>Requirements</h2>
+<p>Ambient sounds need a way to know what "outside" means. This requires either:</p>
+<ul>
+  <li><strong>SpatialReverb with an "Outside" room defined</strong>, or</li>
+  <li><strong>A custom outside callback</strong> via <code>Timbre:RegisterCustomOutsideCallback()</code>.</li>
+</ul>
+<p>The system automatically detects which portal nodes face outside by probing both sides of each portal using whichever detection method is available.</p>
+
+<h2>CreateAmbientSound</h2>
+<div class="api-sig"><code><span class="kw">function</span> Timbre:<span class="fn">CreateAmbientSound</span>(audioPlayer: <span class="ty">AudioPlayer</span>, params: {[<span class="ty">string</span>]: <span class="ty">any</span>}?, category: <span class="ty">string?</span>, identifier: <span class="ty">string?</span>): <span class="ty">AmbientSoundObject?</span></code></div>
+<p>Returns <code>nil</code> with a warning if no outside detection is available.</p>
+<table class="param-table">
+  <tr><th>Parameter</th><th>Type</th><th>Description</th></tr>
+  <tr><td>audioPlayer</td><td>AudioPlayer</td><td>The AudioPlayer for the ambient sound. Automatically cleaned up when destroyed.</td></tr>
+  <tr><td>params</td><td>{[string]: any}?</td><td>Sound parameters. <code>OutsideVolume</code> and <code>InsideVolume</code> are especially relevant here.</td></tr>
+  <tr><td>category</td><td>string?</td><td>Debug category (defaults to <code>"Ambient"</code>).</td></tr>
+  <tr><td>identifier</td><td>string?</td><td>Debug display name.</td></tr>
+</table>
+<h3>Ambient-Specific Parameters</h3>
+<table class="settings-table">
+  <tr><th>Parameter</th><th>Default</th><th>Description</th></tr>
+  <tr><td>OutsideVolume</td><td>1</td><td>Volume when the listener is outside (0–1).</td></tr>
+  <tr><td>InsideVolume</td><td>0.5</td><td>Volume multiplier when the listener is inside (0–1). Fades smoothly when entering/leaving.</td></tr>
 </table>
 
-<pre><code><span class="cm">-- Immediate detach</span>
-Timbre:<span class="fn">Detach</span>(audioPlayer)
+<h2>DestroyAmbientSound</h2>
+<div class="api-sig"><code><span class="kw">function</span> Timbre:<span class="fn">DestroyAmbientSound</span>(ambientObj: <span class="ty">AmbientSoundObject</span>, fadeOutDuration: <span class="ty">number?</span>, onComplete: (() <span class="op">-></span> ())?)</code></div>
 
-<span class="cm">-- Fade out over 1 second, then destroy the player</span>
-Timbre:<span class="fn">Detach</span>(audioPlayer, <span class="num">1</span>, <span class="kw">function</span>()
-    audioPlayer:<span class="fn">Destroy</span>()
+<h2>Custom Outside Callback</h2>
+<p>If you don't use SpatialReverb rooms, register your own outside detection:</p>
+<div class="api-sig"><code><span class="kw">function</span> Timbre:<span class="fn">RegisterCustomOutsideCallback</span>(callback: (<span class="ty">Vector3</span>) <span class="op">-></span> <span class="ty">boolean</span>)</code></div>
+<pre><code>Timbre:<span class="fn">RegisterCustomOutsideCallback</span>(<span class="kw">function</span>(position)
+    <span class="kw">return</span> position.Y > <span class="num">100</span> <span class="cm">-- above Y=100 is "outside"</span>
 <span class="kw">end</span>)</code></pre>
 
-
-<!-- ── SetListener ── -->
-<h3 id="rt-setlistener">Timbre:SetListener() <a class="anchor" href="#rt-setlistener">#</a></h3>
-
-<p>Override the default camera listener with a custom part or attachment. Useful for first-person games where audio should be relative to the character's head rather than the camera.</p>
-
-<div class="api-sig"><code><span class="kw">function</span> Timbre:<span class="fn">SetListener</span>(listener: (<span class="ty">Attachment</span> | <span class="ty">PVInstance</span>)?)</code></div>
-
-<table class="param-table">
-  <tr><th>Parameter</th><th>Type</th><th>Description</th></tr>
-  <tr>
-    <td>listener</td>
-    <td>(Attachment | PVInstance)?</td>
-    <td>The part or attachment to use as the listener. Pass <code>nil</code> to revert back to the default camera listener.</td>
-  </tr>
-</table>
-
-<p>If the provided listener is destroyed (removed from the DataModel), Timbre automatically reverts to the camera.</p>
-
-<pre><code><span class="cm">-- Use the character's head as the listener</span>
-Timbre:<span class="fn">SetListener</span>(character.Head)
-
-<span class="cm">-- Revert to camera</span>
-Timbre:<span class="fn">SetListener</span>(<span class="kw">nil</span>)</code></pre>
-
-
-<!-- ═══════════════════════════════════════════════════════════════ -->
-<!--                      SOUND PARAMETERS                         -->
-<!-- ═══════════════════════════════════════════════════════════════ -->
-
-<div class="section-label">Reference</div>
-<h2 id="sound-params">Sound Parameters <a class="anchor" href="#sound-params">#</a></h2>
-
-<p>These are the per-sound settings you can pass into the <code>params</code> table when calling <a href="#rt-attach"><code>Timbre:Attach()</code></a>, or define in a <a href="#rt-sound-profiles">Sound Profile</a>. If a value isn't provided explicitly or through a profile, the built-in default is used.</p>
-
-
-<!-- ── Distance & Rolloff ── -->
-<h3 id="sp-distance">Distance &amp; Rolloff <a class="anchor" href="#sp-distance">#</a></h3>
-<p>Controls how far the sound can be heard and how it fades over distance.</p>
-
-<table class="settings-table">
-  <tr><th>Parameter</th><th>Default</th><th>Description</th></tr>
-  <tr>
-    <td>MinDistance</td>
-    <td>10</td>
-    <td>Distance (in studs) at which the sound starts to get quieter. Inside this radius the sound is at full volume.</td>
-  </tr>
-  <tr>
-    <td>MaxDistance</td>
-    <td>150</td>
-    <td>Distance (in studs) at which the sound is no longer audible. Beyond this the sound won't be processed at all.</td>
-  </tr>
-  <tr>
-    <td>RollOffMode</td>
-    <td>InverseTapered</td>
-    <td>The distance attenuation curve. Matches Roblox's <code>RollOffMode</code> enum — <code>Linear</code>, <code>Inverse</code>, <code>InverseTapered</code>, or <code>InverseSquare</code>. InverseTapered is a good general-purpose choice.</td>
-  </tr>
-</table>
-
-
-<!-- ── Diffraction ── -->
-<h3 id="sp-diffraction">Diffraction <a class="anchor" href="#sp-diffraction">#</a></h3>
-<p>Controls how the sound muffles and bends when traveling around obstacles.</p>
-
-<table class="settings-table">
-  <tr><th>Parameter</th><th>Default</th><th>Description</th></tr>
-  <tr>
-    <td>SoundAngleSensitivity</td>
-    <td>0.5</td>
-    <td>How much bends in the path muffle the sound. Higher values mean sharper corners cause more muffling. Think of it as "how much does turning a corner affect this sound?"</td>
-  </tr>
-  <tr>
-    <td>SoundBassRetention</td>
-    <td>1</td>
-    <td>How much bass survives when the sound is muffled (0–1). At 0, bass drops off along with everything else. At 1, bass passes through walls untouched.</td>
-  </tr>
-  <tr>
-    <td>AirAbsorptionEnabled</td>
-    <td>false</td>
-    <td>Whether long paths muffle the sound just from distance, even without bends. When enabled, the further sound has to travel through the propagation graph, the more it gets muffled — simulating how air absorbs high frequencies over distance.</td>
-  </tr>
-  <tr>
-    <td>Diffraction_AirAbsorptionMinDistance</td>
-    <td>0</td>
-    <td>Distance (in studs) before air absorption kicks in. Sound traveling less than this distance through the graph doesn't get any air absorption muffle. Keeps nearby sounds clear.</td>
-  </tr>
-  <tr>
-    <td>IncludeEntryAngle</td>
-    <td>true</td>
-    <td>Whether to include the angle from the source to the first node when calculating bend cost. On by default for more precise geometry response — turn off for softer, more forgiving results.</td>
-  </tr>
-  <tr>
-    <td>SoundDirectivity</td>
-    <td>0</td>
-    <td>How directional the sound source is (0–1). At 0 the sound radiates equally in all directions. At higher values, sound is louder in the direction the source faces and more muffled behind it — useful for speakers, TVs, or megaphones.</td>
-  </tr>
-  <tr>
-    <td>MaxMuffle</td>
-    <td>40</td>
-    <td>The maximum EQ attenuation in dB that muffling can apply. Caps how quiet the high/mid/low bands can get. Higher values allow sounds to be more aggressively muffled.</td>
-  </tr>
-</table>
-
-
-<!-- ── Direct Occlusion ── -->
-<h3 id="sp-direct-occlusion">Direct Occlusion <a class="anchor" href="#sp-direct-occlusion">#</a></h3>
-<p>The direct occlusion channel plays the sound at its true source position with muffling, giving a "through the wall" effect when the listener is close. These settings control when and how it activates.</p>
-
-<table class="settings-table">
-  <tr><th>Parameter</th><th>Default</th><th>Description</th></tr>
-  <tr>
-    <td>DirectOcclusionStrength</td>
-    <td>1</td>
-    <td>Multiplier on how much the direct channel gets muffled. At 1, full muffling. Lower values make the direct channel sound clearer even when occluded.</td>
-  </tr>
-  <tr>
-    <td>DirectOcclusionActivationDistance</td>
-    <td>nil</td>
-    <td>Distance (in studs) within which the direct occlusion channel activates. When <code>nil</code>, direct occlusion is disabled and only the diffraction channel is used. Set this to a value smaller than MaxDistance to get a "through the wall" effect when close to the source.</td>
-  </tr>
-  <tr>
-    <td>DirectOcclusionAudibleDistance</td>
-    <td>nil</td>
-    <td>Distance within which the direct channel is at full volume. Beyond this but inside the activation distance, it fades smoothly. Creates a gentle transition zone instead of a hard pop-in.</td>
-  </tr>
-</table>
-
-
-<!-- ── Portals ── -->
-<h3 id="sp-portals">Portals <a class="anchor" href="#sp-portals">#</a></h3>
-<p>Controls how closed portals (doors, windows) affect this particular sound.</p>
-
-<table class="settings-table">
-  <tr><th>Parameter</th><th>Default</th><th>Description</th></tr>
-  <tr>
-    <td>PortalSensitivity</td>
-    <td>1</td>
-    <td>Scales how much closed portals muffle this sound (0–1). At 1, full portal effect. At 0.3, portals are only 30% as effective. Explosions and gunshots might benefit from low values; quiet voices from high.</td>
-  </tr>
-  <tr>
-    <td>PortalDamping</td>
-    <td>0</td>
-    <td>Volume reduction per unit of portal muffle (0–1). At 0, closed portals only affect EQ — no volume loss. At 1, a portal with muffle 0.5 would halve the volume. Stacks across multiple portals.</td>
-  </tr>
-</table>
-
-
-<!-- ── Convenience ── -->
-<h3 id="sp-qol">Convenience <a class="anchor" href="#sp-qol">#</a></h3>
-<p>Quality-of-life settings applied directly to the AudioPlayer on attach.</p>
-
-<table class="settings-table">
-  <tr><th>Parameter</th><th>Default</th><th>Description</th></tr>
-  <tr>
-    <td>Volume</td>
-    <td>nil</td>
-    <td>If set, applies this value to <code>AudioPlayer.Volume</code> when the sound is attached. Saves you a separate line of code.</td>
-  </tr>
-  <tr>
-    <td>Pitch</td>
-    <td>nil</td>
-    <td>If set, applies this value to <code>AudioPlayer.PlaybackSpeed</code> when the sound is attached.</td>
-  </tr>
-</table>
-
-
-<!-- ── Examples ── -->
-<h2 id="sp-examples">Sound Parameters - Examples <a class="anchor" href="#sp-examples">#</a></h2>
-
-<p>Here are two profiles that show how these parameters work together to create very different-sounding results.</p>
-
-<div class="example-card">
-  <div class="example-card-title"><span class="icon">💥</span> Gunshot</div>
-  <div class="example-card-goal">A loud, punchy sound that carries far and doesn't muffle easily.</div>
-  <ul>
-    <li><strong>Loud and far-reaching</strong> — large min/max distance</li>
-    <li><strong>Loses most of its energy from bending around obstacles</strong> — low angle sensitivity</li>
-    <li><strong>Takes a lot of bending to lose energy</strong> — little air absorption</li>
-    <li><strong>Retains its punchy bass</strong> — full bass retention through muffling</li>
-  </ul>
-<pre><code><span class="kw">local</span> GunshotProfile = {
-
-    MinDistance = <span class="num">40</span>,  <span class="cm">-- Loud within 40 studs</span>
-    MaxDistance = <span class="num">300</span>, <span class="cm">-- Far max distance</span>
-
-    SoundAngleSensitivity = <span class="num">0.2</span>, <span class="cm">-- Takes a lot of bending to lose energy</span>
-    SoundBassRetention = <span class="num">1</span>,      <span class="cm">-- Retains its bass</span>
-    SoundDirectivity = <span class="num">0</span>,        <span class="cm">-- Omni directional</span>
-
-    AirAbsorptionEnabled = <span class="kw">true</span>,             <span class="cm">-- Muffle by distance, but:</span>
-    Diffraction_AirAbsorptionMinDistance = <span class="num">200</span>, <span class="cm">-- Don't muffle until 60% of max</span>
-
-    IncludeEntryAngle = <span class="kw">false</span>, <span class="cm">-- Only serious bends matter</span>
-
-    DirectOcclusionStrength = <span class="num">0</span>,
-    DirectOcclusionActivationDistance = <span class="kw">nil</span>,
-    DirectOcclusionAudibleDistance = <span class="kw">nil</span>,
-
-    MaxMuffle = <span class="num">40</span>,
-
-    PortalSensitivity = <span class="num">0.5</span>, <span class="cm">-- Closed portals muffle 50% less</span>
-    PortalDamping = <span class="num">0</span>,        <span class="cm">-- Closed portals don't affect volume</span>
-}</code></pre>
-</div>
-
-<div class="example-card">
-  <div class="example-card-title"><span class="icon">🗣️</span> Voice</div>
-  <div class="example-card-goal">A softer, directional sound that muffles quickly behind walls and through doors.</div>
-  <ul>
-    <li><strong>Softer, not very far-reaching</strong> — moderate max distance</li>
-    <li><strong>Loses energy easily</strong> — air absorption kicks in early, high angle sensitivity</li>
-    <li><strong>Directional</strong> — louder in front of the speaker, quieter behind</li>
-    <li><strong>Drowns out easily through portals</strong> — full portal sensitivity and damping</li>
-  </ul>
-<pre><code><span class="kw">local</span> VoiceProfile = {
-
-    MinDistance = <span class="num">10</span>,  <span class="cm">-- Loud within 10 studs</span>
-    MaxDistance = <span class="num">150</span>, <span class="cm">-- Not very far max distance</span>
-
-    SoundAngleSensitivity = <span class="num">0.5</span>, <span class="cm">-- Drowns out quickly around bends</span>
-    SoundBassRetention = <span class="num">0.5</span>,    <span class="cm">-- Retains only some of its bass</span>
-    SoundDirectivity = <span class="num">1</span>,        <span class="cm">-- Directional</span>
-
-    AirAbsorptionEnabled = <span class="kw">true</span>,            <span class="cm">-- Muffle by distance pretty soon</span>
-    Diffraction_AirAbsorptionMinDistance = <span class="num">40</span>,
-
-    IncludeEntryAngle = <span class="kw">true</span>, <span class="cm">-- Subtle angle differences muffle more</span>
-
-    DirectOcclusionStrength = <span class="num">0</span>,
-    DirectOcclusionActivationDistance = <span class="kw">nil</span>,
-    DirectOcclusionAudibleDistance = <span class="kw">nil</span>,
-
-    MaxMuffle = <span class="num">80</span>, <span class="cm">-- Energy drowns out quicker</span>
-
-    PortalSensitivity = <span class="num">1</span>, <span class="cm">-- Closed portals muffle at full effectiveness</span>
-    PortalDamping = <span class="num">1</span>,      <span class="cm">-- Closed portals affect volume by the same amount</span>
-}</code></pre>
-</div>
-
-
-<!-- ═══════════════════════════════════════════════════════════════ -->
-<!--                       GLOBAL SETTINGS                         -->
-<!-- ═══════════════════════════════════════════════════════════════ -->
-
-<h2 id="global-settings">Global Settings <a class="anchor" href="#global-settings">#</a></h2>
-
-<p>These are system-wide settings in <code>TimbreSettings</code> that control how the entire runtime behaves. They apply to all sounds globally and can be tweaked in the debug window at runtime.</p>
-
-
-<!-- ── Audio ── -->
-<h3 id="gs-audio">Audio <a class="anchor" href="#gs-audio">#</a></h3>
-<p>Core settings that affect how sound propagation and muffling work.</p>
-
-<table class="settings-table">
-  <tr><th>Setting</th><th>Default</th><th>Description</th></tr>
-  <tr>
-    <td>REPOSITIONED_AUDIO</td>
-    <td>true</td>
-    <td>When enabled, occluded sounds are repositioned to the diffraction exit point so they appear to come from around the corner. When off, the emitter stays at the source and only EQ changes.</td>
-  </tr>
-  <tr>
-    <td>MAX_PATH_COST_SPREAD</td>
-    <td>10.5</td>
-    <td>How much more expensive a secondary path can be (vs. the best path) and still be blended in. Higher values blend more paths together for smoother transitions, but use more CPU.</td>
-  </tr>
-  <tr>
-    <td>BEND_ANGLE_PENALTY</td>
-    <td>0.15</td>
-    <td>Extra muffle penalty added for each bend in the path. More bends = more muffling. Higher values punish winding paths more aggressively.</td>
-  </tr>
-  <tr>
-    <td>DEFAULT_PORTAL_MUFFLE</td>
-    <td>0.5</td>
-    <td>Fallback muffle amount applied per portal if the portal doesn't have its own muffle cost set in the editor.</td>
-  </tr>
-  <tr>
-    <td>SKIP_PATH_BLENDING</td>
-    <td>false</td>
-    <td>When enabled, only the single best path is used — no blending with nearby alternate paths. Saves a bit of CPU but may sound less smooth.</td>
-  </tr>
-  <tr>
-    <td>EQ_SMOOTHING_SPEED</td>
-    <td>0.1</td>
-    <td>How fast the muffling EQ interpolates to its target value. Lower = smoother but slower transitions. Higher = snappier response.</td>
-  </tr>
-  <tr>
-    <td>POSITION_LERP_SPEED</td>
-    <td>0.2</td>
-    <td>How fast the diffracted emitter position moves to its target. Lower = more gradual repositioning. Higher = more immediate jumps.</td>
-  </tr>
-  <tr>
-    <td>FADER_SPEED</td>
-    <td>1</td>
-    <td>How fast channel volume faders interpolate. Controls the speed of fade-in/out when channels activate or deactivate.</td>
-  </tr>
-  <tr>
-    <td>REVERB_MUFFLE_SPEED</td>
-    <td>0.1</td>
-    <td>How fast the "shadow EQ" interpolates — this is the EQ on the inactive channel that tracks the active one so there's no pop when switching.</td>
-  </tr>
-  <tr>
-    <td>DIRECT_OCCLUSION_EUCLIDEAN_AIR_ABSORPTION</td>
-    <td>true</td>
-    <td>When enabled, the direct occlusion channel uses straight-line distance for air absorption instead of path cost.</td>
-  </tr>
-</table>
-
-
-<!-- ── Listener ── -->
-<h3 id="gs-listener">Listener <a class="anchor" href="#gs-listener">#</a></h3>
-
-<table class="settings-table">
-  <tr><th>Setting</th><th>Default</th><th>Description</th></tr>
-  <tr>
-    <td>UseProvidedListener</td>
-    <td>false</td>
-    <td>When false, the camera is used as the listener. When true, Timbre uses whatever part or attachment you pass in via <code>Timbre:SetListener()</code> — useful for first-person games where you want audio relative to the character's head.</td>
-  </tr>
-</table>
-
-
-<!-- ── Reverb ── -->
-<h3 id="gs-reverb">Reverb <a class="anchor" href="#gs-reverb">#</a></h3>
-<p>Settings for the spatial reverb system.</p>
-
-<table class="settings-table">
-  <tr><th>Setting</th><th>Default</th><th>Description</th></tr>
-  <tr>
-    <td>REVERB_INTERPOLATION_SPEED</td>
-    <td>0.1</td>
-    <td>How fast reverb properties blend when moving between rooms. Lower = slower, more gradual room transitions.</td>
-  </tr>
-  <tr>
-    <td>REVERB_RESCAN_DISTANCE</td>
-    <td>0.5</td>
-    <td>How far (in studs) the listener must move before the reverb system rescans for blend nodes. Lower = more frequent updates.</td>
-  </tr>
-  <tr>
-    <td>REVERB_MAX_BLEND_NODES</td>
-    <td>4</td>
-    <td>Maximum number of reverb nodes to blend between in a room. More nodes = smoother spatial variation, but more work per frame.</td>
-  </tr>
-  <tr>
-    <td>REVERB_NODE_VISIBILITY_CHECK</td>
-    <td>false</td>
-    <td>When enabled, reverb blend nodes are raycast-checked for visibility. Nodes blocked by walls are excluded from the blend.</td>
-  </tr>
-</table>
-
-
-<!-- ── Frame Budgets ── -->
-<h3 id="gs-budgets">Frame Budgets <a class="anchor" href="#gs-budgets">#</a></h3>
-<p>Time limits that prevent Timbre from using too much of your frame. If the budget is exceeded, remaining work is deferred to the next frame.</p>
-
-<table class="settings-table">
-  <tr><th>Setting</th><th>Default</th><th>Description</th></tr>
-  <tr>
-    <td>BUDGET_SOUND_UPDATES_MS</td>
-    <td>0.25</td>
-    <td>Maximum milliseconds per frame spent updating sounds (occlusion checks, diffraction, EQ). Sounds beyond the budget are skipped that frame.</td>
-  </tr>
-  <tr>
-    <td>BUDGET_SIGHT_UPDATES_MS</td>
-    <td>0.25</td>
-    <td>Maximum milliseconds per frame spent on sight-line raycasts (checking which nodes are visible from each sound and the listener).</td>
-  </tr>
-  <tr>
-    <td>REVERB_BUDGET_MS</td>
-    <td>0.1</td>
-    <td>Maximum milliseconds per frame spent on reverb node visibility raycasts.</td>
-  </tr>
-  <tr>
-    <td>SOUND_UPDATE_INTERVAL</td>
-    <td>1/60</td>
-    <td>Fixed timestep for the sound update loop (in seconds). At 1/60, sounds update at 60 Hz regardless of framerate — no need to run audio logic at 240 fps.</td>
-  </tr>
-</table>
-
-
-<!-- ── Staggering ── -->
-<h3 id="gs-staggering">Staggering <a class="anchor" href="#gs-staggering">#</a></h3>
-<p>Limits how many expensive operations run per frame by spreading them across multiple frames.</p>
-
-<table class="settings-table">
-  <tr><th>Setting</th><th>Default</th><th>Description</th></tr>
-  <tr>
-    <td>STAGGER_DIFFRACTION</td>
-    <td>true</td>
-    <td>When enabled, only a limited number of sounds get their diffraction recomputed each frame. The rest use their cached result from the previous frame.</td>
-  </tr>
-  <tr>
-    <td>STAGGER_MAX_DIFFRACTION_PER_FRAME</td>
-    <td>4</td>
-    <td>Maximum number of sounds that can recompute diffraction in a single frame (when staggering is on).</td>
-  </tr>
-  <tr>
-    <td>STAGGER_OCCLUSION</td>
-    <td>false</td>
-    <td>When enabled, limits how many occlusion raycasts happen per frame. Off by default since occlusion checks are relatively cheap.</td>
-  </tr>
-  <tr>
-    <td>MAX_OCCLUSION_PER_FRAME</td>
-    <td>12</td>
-    <td>Maximum number of occlusion raycasts per frame (when staggering is on).</td>
-  </tr>
-  <tr>
-    <td>SORT_INTERVAL</td>
-    <td>4</td>
-    <td>How often (in frames) the nearby sounds list is re-sorted by priority. Sorting ensures the most important sounds get processed first within the budget.</td>
-  </tr>
-  <tr>
-    <td>CAP_DIFFRACTION_NODES</td>
-    <td>true</td>
-    <td>When enabled, limits how many propagation nodes are queried per sound. Prevents expensive pathfinding on sounds near lots of nodes.</td>
-  </tr>
-  <tr>
-    <td>MAX_SOURCE_NODES</td>
-    <td>5</td>
-    <td>Maximum number of nodes to consider near the sound source (when capping is on). The closest nodes are kept.</td>
-  </tr>
-  <tr>
-    <td>MAX_LISTENER_NODES</td>
-    <td>5</td>
-    <td>Maximum number of nodes to consider near the listener (when capping is on).</td>
-  </tr>
-</table>
-
-
-<!-- ── Optimizations ── -->
-<h3 id="gs-optimizations">Optimizations <a class="anchor" href="#gs-optimizations">#</a></h3>
-<p>Performance features.</p>
-
-<table class="settings-table">
-  <tr><th>Setting</th><th>Default</th><th>Description</th></tr>
-  <tr>
-    <td>SURFACE_CACHE_ENABLED</td>
-    <td>true</td>
-    <td>Caches the blocking surface when a sight raycast hits a wall. On the next frame, if the same surface still blocks the line, the raycast is skipped entirely.</td>
-  </tr>
-  <tr>
-    <td>USE_CUSTOM_RAYCAST</td>
-    <td>true</td>
-    <td>Uses a dedicated WorldModel for raycasts instead of the main workspace. Faster because it only contains tagged occlusion/portal parts.</td>
-  </tr>
-  <tr>
-    <td>CONCURRENCY_GROUP_ENABLED</td>
-    <td>true</td>
-    <td>Enables the concurrency group system. When on, sounds with a <code>ConcurrencyGroup</code> param are automatically limited to the max voices set in the profile folder.</td>
-  </tr>
-</table>
-
-
-<!-- ── Pooling ── -->
-<h3 id="gs-pooling">Pooling <a class="anchor" href="#gs-pooling">#</a></h3>
-<p>Instance pooling pre-creates the audio graph (emitters, faders, EQ, reverb) so attaching a sound doesn't need to create Instances at runtime.</p>
-
-<table class="settings-table">
-  <tr><th>Setting</th><th>Default</th><th>Description</th></tr>
-  <tr>
-    <td>POOL_ENABLED</td>
-    <td>true</td>
-    <td>When enabled, Timbre pre-creates a pool of sound slots at startup. Attaching a sound claims a slot instead of creating new Instances. Should be faster for frequent attach/detach.</td>
-  </tr>
-  <tr>
-    <td>POOL_TARGET_COUNT</td>
-    <td>40</td>
-    <td>How many sound slots to pre-create. If you exceed this, the pool grows automatically (with a warning). Set this to roughly the max number of simultaneous sounds you expect in your game.</td>
-  </tr>
-</table>
-
+<h3>Example</h3>
+<pre><code><span class="kw">local</span> windPlayer = Instance.new(<span class="str">"AudioPlayer"</span>)
+windPlayer.Asset = <span class="str">"rbxassetid://12345"</span>
+windPlayer.Looping = <span class="kw">true</span>
+windPlayer.Parent = workspace
+
+<span class="kw">local</span> wind = Timbre:<span class="fn">CreateAmbientSound</span>(windPlayer, {
+    OutsideVolume = <span class="num">0.8</span>,
+    InsideVolume = <span class="num">0.3</span>,
+    MaxDistance = <span class="num">200</span>,
+    SoundAngleSensitivity = <span class="num">0.4</span>,
+    PortalSensitivity = <span class="num">1</span>,
+}, <span class="str">"Ambient"</span>, <span class="str">"Wind"</span>)
+
+windPlayer:<span class="fn">Play</span>()</code></pre>
 <div class="callout info">
-  <div class="callout-title">Startup-only settings</div>
-  <code>POOL_ENABLED</code> and <code>POOL_TARGET_COUNT</code> are read once when <code>Timbre:Start()</code> is called. Changing them at runtime has no effect — the pool is already created.
+  <div class="callout-title">How outside portals are found</div>
+  <p style="margin-bottom:0">When a map is loaded, Timbre probes each portal node along ±LookVector in small steps. If any probe point is detected as "outside" by either SpatialReverb or your custom callback, that portal is marked as outside-facing. This is computed once per map load.</p>
+</div>
 </div>
 
+<!-- ══════════════ SOUND PARAMETERS ══════════════ -->
+<div class="page" id="page-sound-params">
+<div class="section-label">Reference</div>
+<h1>Sound Parameters</h1>
+<p>Per-sound settings passed into the <code>params</code> table when calling <code>Attach()</code>, <code>AttachVolumetric()</code>, or <code>CreateAmbientSound()</code>. Can also be defined in a Sound Profile.</p>
 
-<!-- ═══════════════════════════════════════════════════════════════ -->
-<!--                           DEBUG                               -->
-<!-- ═══════════════════════════════════════════════════════════════ -->
+<h2>Distance &amp; Rolloff</h2>
+<table class="settings-table">
+  <tr><th>Parameter</th><th>Default</th><th>Description</th></tr>
+  <tr><td>MinDistance</td><td>10</td><td>Distance (studs) at which attenuation begins.</td></tr>
+  <tr><td>MaxDistance</td><td>150</td><td>Distance (studs) at which the sound is silent.</td></tr>
+  <tr><td>RollOffMode</td><td>InverseTapered</td><td>Distance attenuation curve — <code>Linear</code>, <code>Inverse</code>, <code>InverseTapered</code>, or <code>InverseSquare</code>.</td></tr>
+  <tr><td>ReferenceEmitter</td><td>nil</td><td>An <code>AudioEmitter</code> whose custom distance/angle attenuation curves are copied.</td></tr>
+</table>
 
-<div class="section-label">Debug</div>
-<h2 id="debug">Debug <a class="anchor" href="#debug">#</a></h2>
+<h2>Diffraction</h2>
+<table class="settings-table">
+  <tr><th>Parameter</th><th>Default</th><th>Description</th></tr>
+  <tr><td>SoundAngleSensitivity</td><td>0.5</td><td>How much bends muffle the sound.</td></tr>
+  <tr><td>SoundBassRetention</td><td>1</td><td>How much bass survives muffling (0–1).</td></tr>
+  <tr><td>AirAbsorptionEnabled</td><td>false</td><td>Whether long paths muffle from distance alone.</td></tr>
+  <tr><td>Diffraction_AirAbsorptionMinDistance</td><td>0</td><td>Distance (studs) before air absorption starts.</td></tr>
+  <tr><td>IncludeEntryAngle</td><td>true</td><td>Include source-to-first-node angle in bend cost.</td></tr>
+  <tr><td>SoundDirectivity</td><td>0</td><td>How directional the source is (0–1).</td></tr>
+  <tr><td>MaxMuffle</td><td>40</td><td>Maximum EQ attenuation in dB.</td></tr>
+</table>
 
-<p>To view information about playing sounds at runtime, set <code>TimbreSettings.DEBUG</code> to <code>true</code>. This enables the Timbre debug panel powered by <a href="https://github.com/SirMallard/Iris" target="_blank">Iris</a>.</p>
+<h2>Direct Occlusion</h2>
+<table class="settings-table">
+  <tr><th>Parameter</th><th>Default</th><th>Description</th></tr>
+  <tr><td>DirectOcclusionStrength</td><td>1</td><td>Multiplier on direct channel muffling.</td></tr>
+  <tr><td>DirectOcclusionActivationDistance</td><td>nil</td><td>Distance within which the direct channel activates. <code>nil</code> = disabled.</td></tr>
+  <tr><td>DirectOcclusionAudibleDistance</td><td>nil</td><td>Distance within which direct is at full volume.</td></tr>
+</table>
 
-<img src="TimbreDebug.png" alt="Timbre debug panel" class="doc-img">
+<h2>Portals</h2>
+<table class="settings-table">
+  <tr><th>Parameter</th><th>Default</th><th>Description</th></tr>
+  <tr><td>PortalSensitivity</td><td>1</td><td>Scales portal muffle effectiveness (0–1).</td></tr>
+  <tr><td>PortalDamping</td><td>0</td><td>Volume reduction per unit of portal muffle (0–1).</td></tr>
+</table>
 
-<p>The debug panel has three tabs:</p>
+<h2>Ambient</h2>
+<table class="settings-table">
+  <tr><th>Parameter</th><th>Default</th><th>Description</th></tr>
+  <tr><td>OutsideVolume</td><td>1</td><td>Volume when the listener is outside (0–1).</td></tr>
+  <tr><td>InsideVolume</td><td>0.5</td><td>Volume multiplier when the listener is inside (0–1).</td></tr>
+</table>
 
-<h3>Sounds</h3>
-<p>A live explorer of every attached sound, organized by the <code>category</code> you passed into <code>Timbre:Attach()</code>. Each category shows how many sounds are playing out of the total. Active sounds display their distance and occlusion state at a glance.</p>
-<p>Click any sound to open a <strong>detail window</strong> showing its full state — position, distance, min/max range, rolloff mode, occlusion status, channel fader and EQ values, the current diffraction path result (cost, angle, bend count, portal muffle), a muffling breakdown of how each factor contributed, and the sound profile if one is set. The diffraction path is also drawn in the 3D viewport as a gizmo so you can see exactly how sound is traveling through your scene.</p>
-
-<h3>Timings</h3>
-<p>A per-subsystem timing breakdown so you can see exactly where your frame budget is being spent. Shows smoothed averages and raw values for total time, sight updates, spatial queries, sort, sound updates, occlusion, diffraction, EQ + fader, reverb, and raycast time. Also displays counts for sounds updated vs. skipped, diffraction computes, occlusion raycasts, path cache hit rate, active sight coroutines, concurrency group silenced sounds, and pool usage.</p>
-
-<h3>Settings</h3>
-<p>Live controls for every <a href="#global-settings">Global Setting</a>. You can tweak any value at runtime and see the effect immediately — useful for dialing in frame budgets, stagger limits, interpolation speeds, and other parameters without restarting.</p>
+<h2>Convenience</h2>
+<table class="settings-table">
+  <tr><th>Parameter</th><th>Default</th><th>Description</th></tr>
+  <tr><td>Volume</td><td>nil</td><td>If set, applies to <code>AudioPlayer.Volume</code> on attach.</td></tr>
+  <tr><td>Pitch</td><td>nil</td><td>If set, applies to <code>AudioPlayer.PlaybackSpeed</code> on attach.</td></tr>
+  <tr><td>Profile</td><td>nil</td><td>Name of a Sound Profile to inherit defaults from.</td></tr>
+  <tr><td>ConcurrencyGroup</td><td>nil</td><td>Name of a concurrency group for voice limiting.</td></tr>
+</table>
 
 <hr>
-<p style="text-align:center;color:var(--text-3);font-size:13px;padding-top:20px">Timbre V1.0 — Please do not redistribute</p>
+<h2>Examples</h2>
+<div class="example-card">
+  <div class="example-card-title"><span class="icon">💥</span> Gunshot</div>
+  <div class="example-card-goal">Loud, punchy, carries far, doesn't muffle easily.</div>
+<pre><code>{ MinDistance = <span class="num">40</span>, MaxDistance = <span class="num">300</span>,
+  SoundAngleSensitivity = <span class="num">0.2</span>, SoundBassRetention = <span class="num">1</span>, SoundDirectivity = <span class="num">0</span>,
+  AirAbsorptionEnabled = <span class="kw">true</span>, Diffraction_AirAbsorptionMinDistance = <span class="num">200</span>,
+  IncludeEntryAngle = <span class="kw">false</span>, MaxMuffle = <span class="num">40</span>,
+  PortalSensitivity = <span class="num">0.5</span>, PortalDamping = <span class="num">0</span> }</code></pre>
+</div>
+<div class="example-card">
+  <div class="example-card-title"><span class="icon">🗣️</span> Voice</div>
+  <div class="example-card-goal">Softer, directional, muffles quickly behind walls and through doors.</div>
+<pre><code>{ MinDistance = <span class="num">10</span>, MaxDistance = <span class="num">150</span>,
+  SoundAngleSensitivity = <span class="num">0.5</span>, SoundBassRetention = <span class="num">0.5</span>, SoundDirectivity = <span class="num">1</span>,
+  AirAbsorptionEnabled = <span class="kw">true</span>, Diffraction_AirAbsorptionMinDistance = <span class="num">40</span>,
+  IncludeEntryAngle = <span class="kw">true</span>, MaxMuffle = <span class="num">80</span>,
+  PortalSensitivity = <span class="num">1</span>, PortalDamping = <span class="num">1</span> }</code></pre>
+</div>
+</div>
+
+<!-- ══════════════ GLOBAL SETTINGS ══════════════ -->
+<div class="page" id="page-global-settings">
+<div class="section-label">Reference</div>
+<h1>Global Settings</h1>
+<p>System-wide settings in <code>TimbreSettings</code>. Can be tweaked live via the debug window.</p>
+
+<h2>Audio</h2>
+<table class="settings-table">
+  <tr><th>Setting</th><th>Default</th><th>Description</th></tr>
+  <tr><td>REPOSITIONED_AUDIO</td><td>true</td><td>Whether occluded sounds reposition to the diffraction exit point.</td></tr>
+  <tr><td>MAX_PATH_COST_SPREAD</td><td>10.5</td><td>Max cost difference for secondary paths to be blended in.</td></tr>
+  <tr><td>BEND_ANGLE_PENALTY</td><td>0.15</td><td>Extra muffle per path bend.</td></tr>
+  <tr><td>DEFAULT_PORTAL_MUFFLE</td><td>0.5</td><td>Fallback muffle per portal without authored values.</td></tr>
+  <tr><td>SKIP_PATH_BLENDING</td><td>false</td><td>Use only the best path — no blending.</td></tr>
+  <tr><td>EQ_SMOOTHING_SPEED</td><td>0.2</td><td>Muffling EQ interpolation speed.</td></tr>
+  <tr><td>POSITION_LERP_SPEED</td><td>0.2</td><td>Diffracted emitter position interpolation speed.</td></tr>
+  <tr><td>FADER_SPEED</td><td>1</td><td>Channel fader interpolation speed.</td></tr>
+  <tr><td>REVERB_MUFFLE_SPEED</td><td>0.1</td><td>Shadow EQ tracking speed for inactive channels.</td></tr>
+  <tr><td>DIRECT_OCCLUSION_EUCLIDEAN_AIR_ABSORPTION</td><td>true</td><td>Direct channel uses straight-line distance for air absorption.</td></tr>
+</table>
+
+<h2>Listener</h2>
+<table class="settings-table">
+  <tr><th>Setting</th><th>Default</th><th>Description</th></tr>
+  <tr><td>UseProvidedListener</td><td>false</td><td>Use a custom listener instead of the camera.</td></tr>
+</table>
+
+<h2>Reverb</h2>
+<table class="settings-table">
+  <tr><th>Setting</th><th>Default</th><th>Description</th></tr>
+  <tr><td>REVERB_INTERPOLATION_SPEED</td><td>0.1</td><td>Reverb property blend speed between rooms.</td></tr>
+  <tr><td>REVERB_RESCAN_DISTANCE</td><td>0.5</td><td>Listener move distance before reverb rescans blend nodes.</td></tr>
+  <tr><td>REVERB_MAX_BLEND_NODES</td><td>4</td><td>Max blend nodes per room.</td></tr>
+  <tr><td>REVERB_NODE_VISIBILITY_CHECK</td><td>false</td><td>Raycast blend nodes for visibility.</td></tr>
+  <tr><td>ROOM_STICK_RADIUS</td><td>2</td><td>Studs to extend room detection past box boundaries. Prevents wall-clip outside glitches.</td></tr>
+</table>
+
+<h2>Frame Budgets</h2>
+<table class="settings-table">
+  <tr><th>Setting</th><th>Default</th><th>Description</th></tr>
+  <tr><td>BUDGET_SOUND_UPDATES_MS</td><td>0.25</td><td>Max ms/frame for sound updates.</td></tr>
+  <tr><td>BUDGET_SIGHT_UPDATES_MS</td><td>0.1</td><td>Max ms/frame for sight-line raycasts.</td></tr>
+  <tr><td>REVERB_BUDGET_MS</td><td>0.1</td><td>Max ms/frame for reverb node raycasts.</td></tr>
+  <tr><td>SOUND_UPDATE_INTERVAL</td><td>1/60</td><td>Fixed timestep for sound updates (seconds).</td></tr>
+</table>
+
+<h2>Staggering</h2>
+<table class="settings-table">
+  <tr><th>Setting</th><th>Default</th><th>Description</th></tr>
+  <tr><td>STAGGER_DIFFRACTION</td><td>true</td><td>Limit diffraction recomputes per frame.</td></tr>
+  <tr><td>STAGGER_MAX_DIFFRACTION_PER_FRAME</td><td>4</td><td>Max diffraction recomputes per frame.</td></tr>
+  <tr><td>STAGGER_OCCLUSION</td><td>false</td><td>Limit occlusion raycasts per frame.</td></tr>
+  <tr><td>MAX_OCCLUSION_PER_FRAME</td><td>12</td><td>Max occlusion raycasts per frame.</td></tr>
+  <tr><td>SORT_INTERVAL</td><td>4</td><td>Re-sort nearby sounds every N frames.</td></tr>
+  <tr><td>CAP_DIFFRACTION_NODES</td><td>true</td><td>Limit propagation nodes queried per sound.</td></tr>
+  <tr><td>MAX_SOURCE_NODES</td><td>5</td><td>Max nodes near the source.</td></tr>
+  <tr><td>MAX_LISTENER_NODES</td><td>5</td><td>Max nodes near the listener.</td></tr>
+</table>
+
+<h2>Optimizations</h2>
+<table class="settings-table">
+  <tr><th>Setting</th><th>Default</th><th>Description</th></tr>
+  <tr><td>SURFACE_CACHE_ENABLED</td><td>true</td><td>Cache blocking surfaces to skip raycasts.</td></tr>
+  <tr><td>USE_CUSTOM_RAYCAST</td><td>true</td><td>Use a dedicated WorldModel for faster raycasts.</td></tr>
+  <tr><td>CONCURRENCY_GROUP_ENABLED</td><td>true</td><td>Enable concurrency group voice limiting.</td></tr>
+</table>
+
+<h2>Pooling</h2>
+<table class="settings-table">
+  <tr><th>Setting</th><th>Default</th><th>Description</th></tr>
+  <tr><td>POOL_ENABLED</td><td>true</td><td>Pre-create sound slots to avoid runtime Instance creation.</td></tr>
+  <tr><td>POOL_TARGET_COUNT</td><td>40</td><td>Number of pre-created sound slots.</td></tr>
+</table>
+
+<h2>Volumetric</h2>
+<table class="settings-table">
+  <tr><th>Setting</th><th>Default</th><th>Description</th></tr>
+  <tr><td>VOLUMETRIC_OCCLUSION_MAX_RAYCASTS</td><td>64</td><td>Per-frame raycast budget for volumetric occlusion scans.</td></tr>
+</table>
+
+<h2>Ambient Sounds</h2>
+<table class="settings-table">
+  <tr><th>Setting</th><th>Default</th><th>Description</th></tr>
+  <tr><td>AMBIENT_SOUND_OUTSIDE_CHECK_DEPTH</td><td>4</td><td>How far (studs) to probe along portal look vector for outside detection.</td></tr>
+  <tr><td>AMBIENT_SOUND_OUTSIDE_CHECK_STEP</td><td>0.5</td><td>Step size (studs) for outside probing.</td></tr>
+  <tr><td>AMBIENT_SOUND_INSIDE_VOLUME_FADEIN</td><td>0.1</td><td>Fade time (seconds) for InsideVolume multiplier when entering/leaving.</td></tr>
+</table>
+</div>
+
+<!-- ══════════════ DEBUG ══════════════ -->
+<div class="page" id="page-debug">
+<div class="section-label">Reference</div>
+<h1>Debug</h1>
+<p>Set <code>TimbreSettings.DEBUG = true</code> to enable the Timbre debug panel powered by <a href="https://github.com/SirMallard/Iris" target="_blank">Iris</a>.</p>
+<img src="TimbreDebug.png" alt="Timbre debug panel" class="doc-img">
+<h2>Sounds Tab</h2>
+<p>A live explorer of every attached sound, organized by category. Click any sound to open a <strong>detail window</strong> showing position, distance, rolloff, occlusion status, channel fader/EQ values, the diffraction path result (cost, angle, bend count, portal muffle), a muffling breakdown, volumetric surface points, and the sound profile if set. The diffraction path is drawn as a 3D gizmo.</p>
+<h2>Timings Tab</h2>
+<p>Per-subsystem timing breakdown — smoothed averages and raw values for total time, sight updates, spatial queries, sort, sound updates, occlusion, diffraction, EQ + fader, reverb, and raycast time. Also shows counts for sounds updated/skipped, path cache hit rate, active sight coroutines, concurrency group silenced sounds, and pool usage.</p>
+<h2>Settings Tab</h2>
+<p>Live controls for every <a href="#" onclick="goTo('global-settings');return false">Global Setting</a>. Tweak any value at runtime and see the effect immediately.</p>
+<hr>
+<p style="text-align:center;color:var(--text-3);font-size:13px;padding-top:16px">Timbre V1.0 — Please do not redistribute</p>
+</div>
 
 </main>
 </div>
 
-<!-- ═══════════════════════ SCRIPTS ═══════════════════════ -->
 <script>
-const links = document.querySelectorAll('.sidebar-link');
-const sections = [];
-links.forEach(link => {
-  const id = link.getAttribute('href')?.replace('#','');
-  if (id) {
-    const el = document.getElementById(id);
-    if (el) sections.push({ el, link });
-  }
-});
-function updateActive() {
-  let current = sections[0];
-  const scrollY = window.scrollY + 90;
-  for (const s of sections) {
-    if (s.el.offsetTop <= scrollY) current = s;
-  }
-  links.forEach(l => l.classList.remove('active'));
-  if (current) current.link.classList.add('active');
+const PAGES = [
+  'overview','how-it-works','scene-setup','reverb-rooms','runtime-setup','playing-audio',
+  'volumetric-audio','ambient-sounds','sound-params','global-settings','debug'
+];
+const PAGE_TITLES = {
+  'overview':'Overview','how-it-works':'How It Works','scene-setup':'Essential Scene Setup','reverb-rooms':'Reverb Rooms',
+  'runtime-setup':'Runtime Setup','playing-audio':'Playing Audio','volumetric-audio':'Volumetric Audio',
+  'ambient-sounds':'Ambient Sounds','sound-params':'Sound Parameters',
+  'global-settings':'Global Settings','debug':'Debug'
+};
+const SECTION_MAP = {
+  'overview':'getting-started','how-it-works':'getting-started','scene-setup':'scene-editor','reverb-rooms':'scene-editor',
+  'runtime-setup':'runtime','playing-audio':'runtime',
+  'volumetric-audio':'runtime','ambient-sounds':'runtime',
+  'sound-params':'reference','global-settings':'reference','debug':'reference'
+};
+function goTo(p){location.hash=p}
+function showPage(pageId){
+  if(!PAGES.includes(pageId))pageId='overview';
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+  const el=document.getElementById('page-'+pageId);
+  if(el)el.classList.add('active');
+  document.querySelectorAll('.sidebar-link').forEach(l=>l.classList.toggle('active',l.dataset.page===pageId));
+  const sec=SECTION_MAP[pageId];
+  document.querySelectorAll('.topnav-tab').forEach(t=>t.classList.toggle('active',t.dataset.section===sec));
+  const idx=PAGES.indexOf(pageId);
+  let nav=el.querySelector('.page-nav');if(nav)nav.remove();
+  nav=document.createElement('div');nav.className='page-nav';
+  if(idx>0){const p=PAGES[idx-1];const b=document.createElement('a');b.className='page-nav-btn prev';b.href='#'+p;b.innerHTML='<span class="label">← Previous</span><span class="title">'+PAGE_TITLES[p]+'</span>';nav.appendChild(b)}
+  else{const s=document.createElement('div');s.className='page-nav-spacer';nav.appendChild(s)}
+  if(idx<PAGES.length-1){const n=PAGES[idx+1];const b=document.createElement('a');b.className='page-nav-btn next';b.href='#'+n;b.innerHTML='<span class="label">Next →</span><span class="title">'+PAGE_TITLES[n]+'</span>';nav.appendChild(b)}
+  el.appendChild(nav);
+  window.scrollTo(0,0);
+  document.querySelector('.sidebar').classList.remove('open');
 }
-window.addEventListener('scroll', updateActive, { passive: true });
-updateActive();
-links.forEach(link => {
-  link.addEventListener('click', () => {
-    document.querySelector('.sidebar').classList.remove('open');
-  });
-});
+document.querySelectorAll('.sidebar-link').forEach(l=>l.addEventListener('click',()=>goTo(l.dataset.page)));
+document.querySelectorAll('.topnav-tab').forEach(t=>t.addEventListener('click',()=>{
+  const s=t.dataset.section;const f=Object.entries(SECTION_MAP).find(([,v])=>v===s);if(f)goTo(f[0]);
+}));
+function onHash(){showPage(location.hash.replace('#','')||'overview')}
+window.addEventListener('hashchange',onHash);onHash();
 </script>
 </body>
 </html>
