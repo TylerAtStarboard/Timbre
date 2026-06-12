@@ -142,6 +142,7 @@ pre code{background:none;padding:0;font-size:13px;color:#d4d4e8}
   </div>
   <div class="sidebar-section" data-section="reference">
     <div class="sidebar-section-title">Reference</div>
+    <button class="sidebar-link" data-page="api-reference">API Reference</button>
     <button class="sidebar-link" data-page="sound-params">Sound Parameters</button>
     <button class="sidebar-link" data-page="global-settings">Global Settings</button>
     <button class="sidebar-link" data-page="debug">Debug</button>
@@ -155,11 +156,11 @@ pre code{background:none;padding:0;font-size:13px;color:#d4d4e8}
 <div class="page" id="page-overview">
 <div class="hero">
   <img src="TimbreLogo.png" alt="Timbre Logo">
-  <div class="hero-text"><h1>Timbre V1.0</h1><div class="subtitle">Performant physical occlusion, diffraction &amp; reverb for sounds in Roblox</div></div>
+  <div class="hero-text"><h1>Timbre V1.0</h1><div class="subtitle">Performant physical occlusion, diffraction &amp; reverb for sounds in Roblox</div></div> 
 </div>
-<div class="section-label">Getting Started</div>
+<div class="section-label">Please do not redistribute!</div>
 <h2>Overview</h2>
-<p>Timbre is a library for space-aware <strong>occlusion</strong>, <strong>diffraction</strong>, and <strong>reverb</strong> within static environments. Sounds muffle behind walls, bend around corners, and ring differently depending on the room they're in.</p>
+<p>Timbre is a library for space-aware <strong>occlusion</strong>, <strong>diffraction</strong>, and <strong>reverb</strong> within static environments. Sounds muffle behind walls, bend around corners, and reverb differently depending on the room they're in.</p>
 <div class="callout spotlight">
   <div class="callout-title"><span class="spark">✦</span> Approximation, not simulation</div>
   <p style="margin-bottom:8px">Timbre does not aim to simulate sound acoustics realistically or considers physical materials — instead, it aims to <strong>approximate</strong> energy loss from sound bending around corners, through doors/windows, and through open space. It tries to be relatively cheap and well tuned for individual gameplay needs.</p>
@@ -316,7 +317,7 @@ draw()})();
 
 <div class="callout info">
   <div class="callout-title">Before you start</div>
-  <p style="margin-bottom:0">Make sure you've read <a href="#" onclick="goTo('how-it-works');return false"><strong>How It Works</strong></a> — it covers how propagation nodes, tags, and visibility work together, and why full node coverage is critical.</p>
+  <p style="margin-bottom:0">Make sure you've read <a href="#" onclick="goTo('how-it-works');return false">How It Works</a> — it covers how propagation nodes, tags, and visibility work together, and why full node coverage is important.</p>
 </div>
 
 
@@ -338,7 +339,11 @@ draw()})();
 </ul>
 
 <div class="step-header"><div class="step-num">2</div><h3>Load / Unload Map</h3></div>
-<p>Select a <code>Model</code> in the Explorer that represents your map, then click <strong>Load from Selection</strong>. All node data, baked paths, and reverb room data will be stored as attributes on this model.</p>
+<p>Select a <code>Model</code> or <code>Folder</code> in the Explorer that represents your map, then click <strong>Load from Selection</strong>. All node data, baked paths, and reverb room data will be stored as attributes on it.</p>
+<div class="callout info">
+  <div class="callout-title">The RootPart anchor</div>
+  <p style="margin-bottom:0">On first load the editor creates a <code>TIMBRE_DATA</code> folder containing an invisible, non-colliding <code>RootPart</code> placed at the map's bounding-box center. All baked data is stored relative to it, so the map can be moved or cloned and everything follows. Don't delete it.</p>
+</div>
 <img src="SelectMap.png" alt="Select and load a map model" class="doc-img">
 
 <div class="step-header"><div class="step-num">3</div><h3>Create Nodes</h3></div>
@@ -557,6 +562,7 @@ audioPlayer.Parent = workspace
   <div class="callout-title">Reuse AudioPlayers when possible</div>
   <p style="margin-bottom:0">Creating and destroying AudioPlayers frequently is wasteful and might lead to strange behavior. Create them ahead of time and reuse them — e.g. for footsteps, create one AudioPlayer per foot, attach once, then swap <code>.Asset</code> and call <code>:Play()</code> on each cue.</p>
 </div>
+<div class="callout info"><div class="callout-title">Changing parameters later</div>Most parameters can be updated at runtime with <code>soundObj:SetParam("MaxMuffle", 0.5)</code> — see the <a href="#" onclick="goTo('api-reference');return false">API Reference</a>.</div>
 
 <h2>Detach</h2>
 <div class="api-sig"><code><span class="kw">function</span> TimbrePlayer:<span class="fn">Detach</span>(soundObj: <span class="ty">SoundObject</span>, fadeOutDuration: <span class="ty">number?</span>, onComplete: (() <span class="op">-></span> ())?)</code></div>
@@ -698,6 +704,162 @@ windPlayer:<span class="fn">Play</span>()</code></pre>
 </div>
 </div>
 
+<!-- ══════════════ API REFERENCE ══════════════ -->
+<div class="page" id="page-api-reference">
+<div class="section-label">Reference</div>
+<h1>API Reference</h1>
+<p>Public Timbre API</p>
+
+<h2>Lifecycle</h2>
+
+<h3>Timbre:SetOcclusionTags</h3>
+<div class="api-sig"><code><span class="kw">function</span> Timbre:<span class="fn">SetOcclusionTags</span>(occlusionPartTag: <span class="ty">string</span>, portalPartTag: <span class="ty">string</span>, dynamicPartTag: <span class="ty">string?</span>)</code></div>
+<p>Tells Timbre which tagged parts block sound, which are portals, and (optionally) which move at runtime.</p>
+<pre><code>Timbre:<span class="fn">SetOcclusionTags</span>(<span class="str">"RoomBorderPart"</span>, <span class="str">"PortalPart"</span>, <span class="str">"PortalPart"</span>)</code></pre>
+
+<h3>Timbre:Start</h3>
+<div class="api-sig"><code><span class="kw">function</span> Timbre:<span class="fn">Start</span>()</code></div>
+<p>Starts the runtime — creates the instance pool, loads Sound Profiles and Concurrency Groups, begins update loops. Call once, after setting tags.</p>
+<pre><code>Timbre:<span class="fn">Start</span>()</code></pre>
+
+<h3>Timbre:LoadMap / Timbre:UnloadMap</h3>
+<div class="api-sig"><code><span class="kw">function</span> Timbre:<span class="fn">LoadMap</span>(map: <span class="ty">Model</span> | <span class="ty">Folder</span>): <span class="ty">LoadedMap</span></code></div>
+<div class="api-sig"><code><span class="kw">function</span> Timbre:<span class="fn">UnloadMap</span>()</code></div>
+<p>Loads baked propagation and reverb data from a map authored in the editor. Loading a new map over an existing one unloads it first.</p>
+<pre><code><span class="kw">local</span> LoadedMap = Timbre:<span class="fn">LoadMap</span>(workspace:<span class="fn">WaitForChild</span>(<span class="str">"Map"</span>))
+<span class="cm">-- later:</span>
+Timbre:<span class="fn">UnloadMap</span>()</code></pre>
+
+<h3>Timbre:SetListener</h3>
+<div class="api-sig"><code><span class="kw">function</span> Timbre:<span class="fn">SetListener</span>(listener: (<span class="ty">Attachment</span> | <span class="ty">PVInstance</span>)?)</code></div>
+<p>Overrides the default camera listener. Pass <code>nil</code> to revert; auto-reverts if the listener is destroyed.</p>
+<pre><code>Timbre:<span class="fn">SetListener</span>(character.Head)
+Timbre:<span class="fn">SetListener</span>(<span class="kw">nil</span>) <span class="cm">-- back to camera</span></code></pre>
+
+<h2>Playing Sounds</h2>
+
+<h3>Timbre:CreatePlayer</h3>
+<div class="api-sig"><code><span class="kw">function</span> Timbre:<span class="fn">CreatePlayer</span>(audioPlayer: <span class="ty">AudioPlayer</span>): <span class="ty">TimbrePlayer</span></code></div>
+<p>Wraps an AudioPlayer. Multiple speakers can attach to one player — all share the source and play in sync. Destroyed automatically with the AudioPlayer.</p>
+<pre><code><span class="kw">local</span> player = Timbre:<span class="fn">CreatePlayer</span>(audioPlayer)</code></pre>
+
+<h3>TimbrePlayer:Attach</h3>
+<div class="api-sig"><code><span class="kw">function</span> TimbrePlayer:<span class="fn">Attach</span>(speaker: <span class="ty">Attachment</span> | <span class="ty">BasePart</span>, params: {[<span class="ty">string</span>]: <span class="ty">any</span>}?, category: <span class="ty">string?</span>, identifier: <span class="ty">string?</span>): <span class="ty">SoundObject</span></code></div>
+<p>Attaches a point-source speaker. Cleaned up automatically when the speaker is destroyed. See <a href="#" onclick="goTo('sound-params');return false">Sound Parameters</a> for the params table.</p>
+<pre><code><span class="kw">local</span> soundObj = player:<span class="fn">Attach</span>(speakerPart, {
+    MaxDistance = <span class="num">80</span>,
+    Profile = <span class="str">"Footsteps"</span>,
+}, <span class="str">"SFX"</span>, <span class="str">"Footstep"</span>)</code></pre>
+
+<h3>TimbrePlayer:AttachVolumetric</h3>
+<div class="api-sig"><code><span class="kw">function</span> TimbrePlayer:<span class="fn">AttachVolumetric</span>(speaker: <span class="ty">BasePart</span>, volumetricParams: {shape: <span class="ty">string?</span>, spacing: <span class="ty">number?</span>}?, params: {[<span class="ty">string</span>]: <span class="ty">any</span>}?, category: <span class="ty">string?</span>, identifier: <span class="ty">string?</span>): <span class="ty">SoundObject</span></code></div>
+<p>Sound emits from the entire surface of the part instead of a single point — see <a href="#" onclick="goTo('volumetric-audio');return false">Volumetric Audio</a>.</p>
+<pre><code><span class="kw">local</span> river = player:<span class="fn">AttachVolumetric</span>(riverPart, {shape = <span class="str">"Box"</span>, spacing = <span class="num">8</span> })</code></pre>
+
+<h3>TimbrePlayer:Detach / DetachAll / Destroy</h3>
+<div class="api-sig"><code><span class="kw">function</span> TimbrePlayer:<span class="fn">Detach</span>(soundObj: <span class="ty">SoundObject</span>, fadeOutDuration: <span class="ty">number?</span>, onComplete: (() <span class="op">-></span> ())?)</code></div>
+<div class="api-sig"><code><span class="kw">function</span> TimbrePlayer:<span class="fn">DetachAll</span>(fadeOutDuration: <span class="ty">number?</span>, onComplete: (() <span class="op">-></span> ())?)</code></div>
+<div class="api-sig"><code><span class="kw">function</span> TimbrePlayer:<span class="fn">Destroy</span>()</code></div>
+<p><code>Destroy</code> immediately detaches everything and is called automatically when the AudioPlayer is destroyed.</p>
+<pre><code>player:<span class="fn">Detach</span>(soundObj, <span class="num">1</span>, <span class="kw">function</span>() <span class="fn">print</span>(<span class="str">"faded out"</span>) <span class="kw">end</span>)</code></pre>
+
+<h3>SoundObject:SetParam</h3>
+<div class="api-sig"><code><span class="kw">function</span> SoundObject:<span class="fn">SetParam</span>(name: <span class="ty">string</span>, value: <span class="ty">any</span>): <span class="ty">boolean</span></code></div>
+<p>Updates a sound parameter at runtime. Pass <code>nil</code> to clear an explicit override and fall back to the profile/default value. Distance parameters regenerate the attenuation envelope; everything else applies on the next update. Works on ambient sounds too (which additionally accept <code>OutsideVolume</code>/<code>InsideVolume</code>). Returns <code>false</code> with a warning for unknown keys and for <code>Profile</code>, <code>ReferenceEmitter</code>, and <code>Compressor</code>, which are baked at attach.</p>
+<pre><code>soundObj:<span class="fn">SetParam</span>(<span class="str">"MaxDistance"</span>, <span class="num">120</span>)
+soundObj:<span class="fn">SetParam</span>(<span class="str">"MaxMuffle"</span>, <span class="kw">nil</span>) <span class="cm">-- back to profile/default</span></code></pre>
+
+<h3>SoundObject.AudibilityChanged</h3>
+<div class="api-sig"><code>SoundObject.AudibilityChanged: <span class="ty">Signal</span>&lt;muffle: <span class="ty">number</span>, volume: <span class="ty">number</span>&gt;</code></div>
+<p>Fires when the sound's computed audibility changes meaningfully. <code>muffle</code> is 0–1 (0 = clear line of sight, 1 = fully blocked); <code>volume</code> is the 0–1 loudness target from distance/path attenuation and portal damping, before smoothing and the AudioPlayer's own Volume. Debounced to ≥0.05 changes, but the <code>volume == 0</code> edge always fires exactly — reliable for virtualization. Connections are cleaned up automatically on detach. Exists on ambient sounds too.</p>
+<pre><code>soundObj.AudibilityChanged:<span class="fn">Connect</span>(<span class="kw">function</span>(muffle, volume)
+    fireParticles.Enabled = volume > <span class="num">0</span> <span class="cm">-- pause FX nobody can hear</span>
+<span class="kw">end</span>)</code></pre>
+
+<h2>Ambient Sounds</h2>
+
+<h3>Timbre:CreateAmbientSound</h3>
+<div class="api-sig"><code><span class="kw">function</span> Timbre:<span class="fn">CreateAmbientSound</span>(audioPlayer: <span class="ty">AudioPlayer</span>, params: {[<span class="ty">string</span>]: <span class="ty">any</span>}?, category: <span class="ty">string?</span>, identifier: <span class="ty">string?</span>): <span class="ty">AmbientSoundObject?</span></code></div>
+<p>Omnidirectional when the listener is outside, diffracts through the nearest outside-facing portal when inside. Returns <code>nil</code> with a warning if no outside detection is available — see <a href="#" onclick="goTo('ambient-sounds');return false">Ambient Sounds</a>.</p>
+<pre><code><span class="kw">local</span> wind = Timbre:<span class="fn">CreateAmbientSound</span>(windPlayer, {
+    OutsideVolume = <span class="num">0.8</span>, InsideVolume = <span class="num">0.3</span>,
+})</code></pre>
+
+<h3>Timbre:DestroyAmbientSound</h3>
+<div class="api-sig"><code><span class="kw">function</span> Timbre:<span class="fn">DestroyAmbientSound</span>(ambientObj: <span class="ty">AmbientSoundObject</span>, fadeOutDuration: <span class="ty">number?</span>, onComplete: (() <span class="op">-></span> ())?)</code></div>
+<pre><code>Timbre:<span class="fn">DestroyAmbientSound</span>(wind, <span class="num">2</span>)</code></pre>
+
+<h3>Timbre:RegisterCustomOutsideCallback</h3>
+<div class="api-sig"><code><span class="kw">function</span> Timbre:<span class="fn">RegisterCustomOutsideCallback</span>(callback: (<span class="ty">Vector3</span>) <span class="op">-></span> <span class="ty">boolean</span>)</code></div>
+<p>Your own "is this position outside?" check, used when you're not using Timbre's reverb rooms</p>
+<pre><code>Timbre:<span class="fn">RegisterCustomOutsideCallback</span>(<span class="kw">function</span>(position)
+    <span class="kw">return</span> position.Y > <span class="num">100</span>
+<span class="kw">end</span>)</code></pre>
+
+<h2>Rooms &amp; Portals</h2>
+
+<h3>Timbre:GetRoomAt</h3>
+<div class="api-sig"><code><span class="kw">function</span> Timbre:<span class="fn">GetRoomAt</span>(position: <span class="ty">Vector3</span>): {Name: <span class="ty">string</span>, IsOutside: <span class="ty">boolean</span>}?</code></div>
+<p>The SpatialReverb room at a world position. Positions outside every room box resolve to the Outside room when one is defined; <code>nil</code> when no room data is loaded.</p>
+<pre><code><span class="kw">local</span> room = Timbre:<span class="fn">GetRoomAt</span>(npc.Position)
+<span class="kw">if</span> room <span class="kw">and</span> room.Name == <span class="str">"Cave"</span> <span class="kw">then</span> ... <span class="kw">end</span></code></pre>
+
+<h3>Timbre:GetListenerRoom</h3>
+<div class="api-sig"><code><span class="kw">function</span> Timbre:<span class="fn">GetListenerRoom</span>(): {Name: <span class="ty">string</span>, IsOutside: <span class="ty">boolean</span>}?</code></div>
+<p>The listener's current room — the same sticky value <code>ListenerRoomChanged</code> reports. Use it to read the initial state when connecting to the signal.</p>
+<pre><code><span class="kw">local</span> room = Timbre:<span class="fn">GetListenerRoom</span>()</code></pre>
+
+<h3>Timbre:SetPortalNodeState</h3>
+<div class="api-sig"><code><span class="kw">function</span> Timbre:<span class="fn">SetPortalNodeState</span>(position: <span class="ty">Vector3</span>, open: <span class="ty">boolean</span>)</code></div>
+<p>Finds the closest portal node to the position and opens/closes it.</p>
+<pre><code>Timbre:<span class="fn">SetPortalNodeState</span>(door:<span class="fn">GetPivot</span>().Position, <span class="kw">false</span>)</code></pre>
+
+<h2>Signals</h2>
+
+<h3>Timbre.ListenerRoomChanged</h3>
+<div class="api-sig"><code>Timbre.ListenerRoomChanged: <span class="ty">Signal</span>&lt;newRoom: <span class="ty">RoomInfo?</span>, oldRoom: <span class="ty">RoomInfo?</span>&gt;</code></div>
+<p>Fires when the listener moves between reverb rooms, with <code>{Name, IsOutside}</code> descriptors. Transitions to/from outdoors report the Outside room. Uses the same sticky room result as reverb, so brief wall-clip glitches don't fire spurious changes.</p>
+<pre><code>Timbre.ListenerRoomChanged:<span class="fn">Connect</span>(<span class="kw">function</span>(newRoom, oldRoom)
+    MusicSystem:<span class="fn">SetZone</span>(newRoom <span class="kw">and</span> newRoom.Name)
+<span class="kw">end</span>)</code></pre>
+
+<h3>Timbre.MapLoaded / Timbre.MapUnloaded</h3>
+<div class="api-sig"><code>Timbre.MapLoaded: <span class="ty">Signal</span>&lt;map: <span class="ty">Instance</span>&gt;</code></div>
+<div class="api-sig"><code>Timbre.MapUnloaded: <span class="ty">Signal</span>&lt;map: <span class="ty">Instance</span>&gt;</code></div>
+<p><code>MapLoaded</code> fires after <code>LoadMap</code> finishes. <code>MapUnloaded</code> fires with the previous map — both from <code>UnloadMap</code> and when <code>LoadMap</code> replaces an already loaded map.</p>
+<pre><code>Timbre.MapLoaded:<span class="fn">Connect</span>(<span class="kw">function</span>(map)
+    AmbienceManager:<span class="fn">Begin</span>(map)
+<span class="kw">end</span>)</code></pre>
+
+<h3>Timbre.SoundAttached / Timbre.SoundDetached</h3>
+<div class="api-sig"><code>Timbre.SoundAttached: <span class="ty">Signal</span>&lt;soundObj&gt;</code></div>
+<div class="api-sig"><code>Timbre.SoundDetached: <span class="ty">Signal</span>&lt;soundObj&gt;</code></div>
+<p>Fire for every sound entering or leaving the system — point, volumetric, simple, and ambient. <code>SoundDetached</code> fires on final removal, i.e. after any fade-out completes. Useful for captions, ducking/mixer layers, and debug tooling.</p>
+<pre><code>Timbre.SoundAttached:<span class="fn">Connect</span>(<span class="kw">function</span>(soundObj)
+    activeCount += <span class="num">1</span>
+<span class="kw">end</span>)</code></pre>
+
+<h2>Settings</h2>
+
+<h3>Timbre:SetGlobalSetting</h3>
+<div class="api-sig"><code><span class="kw">function</span> Timbre:<span class="fn">SetGlobalSetting</span>(name: <span class="ty">string</span>, value: <span class="ty">any</span>): <span class="ty">boolean</span></code></div>
+<p>Changes a <a href="#" onclick="goTo('global-settings');return false">global setting</a> at runtime. Most are read every frame and apply immediately. Type-checked against the current value. Returns <code>false</code> with a warning for unknown names and for settings consumed at a fixed point: <code>DEBUG</code> and <code>UseProvidedListener</code> always; <code>POOL_ENABLED</code>/<code>POOL_TARGET_COUNT</code> after <code>Start()</code>; <code>USE_CUSTOM_RAYCAST</code> after a map is loaded.</p>
+<pre><code>Timbre:<span class="fn">SetGlobalSetting</span>(<span class="str">"EQ_SMOOTHING_SPEED"</span>, <span class="num">0.4</span>)
+Timbre:<span class="fn">SetGlobalSetting</span>(<span class="str">"STAGGER_MAX_DIFFRACTION_PER_FRAME"</span>, <span class="num">8</span>)</code></pre>
+
+<h2>Utilities</h2>
+
+<h3>LoadedMap:ObserveTag</h3>
+<div class="api-sig"><code><span class="kw">function</span> LoadedMap:<span class="fn">ObserveTag</span>(tagName: <span class="ty">string</span>, callback: (<span class="ty">Instance</span>) <span class="op">-></span> (() <span class="op">-></span> ())?)</code></div>
+<p>Watches for tagged instances inside the loaded map. The callback can return a cleanup function, which runs when the instance loses the tag, is destroyed, or the map is unloaded.</p>
+<pre><code>LoadedMap:<span class="fn">ObserveTag</span>(<span class="str">"Door"</span>, <span class="kw">function</span>(door)
+    <span class="cm">-- wire up the door...</span>
+    <span class="kw">return function</span>() <span class="cm">--[[ cleanup ]]</span> <span class="kw">end</span>
+<span class="kw">end</span>)</code></pre>
+
+
+</div>
+
 <!-- ══════════════ SOUND PARAMETERS ══════════════ -->
 <div class="page" id="page-sound-params">
 <div class="section-label">Reference</div>
@@ -782,7 +944,7 @@ windPlayer:<span class="fn">Play</span>()</code></pre>
 <div class="page" id="page-global-settings">
 <div class="section-label">Reference</div>
 <h1>Global Settings</h1>
-<p>System-wide settings in <code>TimbreSettings</code>. Can be tweaked live via the debug window.</p>
+<p>System-wide settings in <code>TimbreSettings</code>. Can be tweaked live via the debug window, or from code with <code>Timbre:SetGlobalSetting()</code> — see the <a href="#" onclick="goTo('api-reference');return false">API Reference</a>. A few settings are consumed once (pool creation, raycast world model) and can't be changed after that point.</p>
 
 <h2>Audio</h2>
 <table class="settings-table">
@@ -889,19 +1051,19 @@ windPlayer:<span class="fn">Play</span>()</code></pre>
 <script>
 const PAGES = [
   'overview','how-it-works','scene-setup','reverb-rooms','runtime-setup','playing-audio',
-  'volumetric-audio','ambient-sounds','sound-params','global-settings','debug'
+  'volumetric-audio','ambient-sounds','api-reference','sound-params','global-settings','debug'
 ];
 const PAGE_TITLES = {
   'overview':'Overview','how-it-works':'How It Works','scene-setup':'Essential Scene Setup','reverb-rooms':'Reverb Rooms',
   'runtime-setup':'Runtime Setup','playing-audio':'Playing Audio','volumetric-audio':'Volumetric Audio',
-  'ambient-sounds':'Ambient Sounds','sound-params':'Sound Parameters',
+  'ambient-sounds':'Ambient Sounds','api-reference':'API Reference','sound-params':'Sound Parameters',
   'global-settings':'Global Settings','debug':'Debug'
 };
 const SECTION_MAP = {
   'overview':'getting-started','how-it-works':'getting-started','scene-setup':'scene-editor','reverb-rooms':'scene-editor',
   'runtime-setup':'runtime','playing-audio':'runtime',
   'volumetric-audio':'runtime','ambient-sounds':'runtime',
-  'sound-params':'reference','global-settings':'reference','debug':'reference'
+  'api-reference':'reference','sound-params':'reference','global-settings':'reference','debug':'reference'
 };
 function goTo(p){location.hash=p}
 function showPage(pageId){
